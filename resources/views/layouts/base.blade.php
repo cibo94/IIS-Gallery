@@ -38,11 +38,18 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
-                    <li><a href="/">welcome {!! Auth::user()->name !!}</a></li>
-                    <li><a href="/auth/logout"><span class="glyphicon glyphicon-log-out"></span> log-out</a></li>
+                    @if (Auth::user()->role == "user")
+                        <li><a href="/user/account">
+                    @else
+                        <li><a href="/admin/account">
+                    @endif
+                                <span class="glyphicon glyphicon-user"></span> {!! Auth::user()->name !!}
+                            </a>
+                        </li>
+                    <li><a href="/auth/logout"><span class="glyphicon glyphicon-off"></span> log-out</a></li>
                 @else
                     <li><a href="/auth/login"><span class="glyphicon glyphicon-log-in"></span> log-in</a></li>
-                    <li><a href="/auth/register"><span class="glyphicon glyphicon-user"></span> sign-in</a></li>
+                    <li><a href="/auth/register"><span class="glyphicon glyphicon-plus"></span> sign-in</a></li>
                 @endif
             </ul>
         </div><!--/collapse navbar-collapse -->

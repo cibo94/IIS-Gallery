@@ -16,6 +16,10 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
+Route::get('/user/account', ['middleware' => "user", "uses" => "AccountController@show"]);
+
+Route::get('/admin/account', ['middleware' => "admin", "uses" => "AccountController@show"]);
+
 Route::get('/exhibition', "ExhibitionController@getGuests");
 
 Route::get('/user/exhibition', ["middleware" => "user", "uses" => "ExhibitionController@getUsers" ]);
