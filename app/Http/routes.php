@@ -16,6 +16,6 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('/home', 'HomeController@get');
+Route::get('/about', function () { return view("about"); });
 
 Route::get('/', 'HomeController@get');
