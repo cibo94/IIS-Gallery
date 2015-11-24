@@ -9,6 +9,7 @@
 
     {!! Html::style('css/app.css') !!}
     {!! Html::style('css/bootstrap.min.css') !!}
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/css/roboto.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/css/ripples.min.css" />
@@ -23,7 +24,7 @@
 <nav class="navbar navbar-default navbar-fixed-top navbar-material-blue-grey">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -58,7 +59,7 @@
 
 <body>
 
-<div class="container" style="padding-top: 100px; padding-bottom: 50px;">
+<div class="container" style="padding: 50px; padding-top: 100px;">
     @yield('content')
 </div><!-- /.container -->
 
@@ -70,7 +71,7 @@
 {!! Html::script('js/bootstrap.min.js') !!}
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/js/material.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/js/ripples.min.js"></script>
-
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.js"></script>
 
 <script src="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.js"></script>
 <script>
@@ -79,6 +80,11 @@
         $(".select").dropdown({"optionClass": "withripple"});
     });
     $().dropdown({autoinit: "select"});
+    $('.data-table').DataTable( {
+        ordering: true,
+        searching: false,
+        paging: false
+    } );
 </script>
 
 

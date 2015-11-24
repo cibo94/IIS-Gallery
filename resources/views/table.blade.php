@@ -1,4 +1,4 @@
- <table class="table table-striped">
+ <table class="display table table-hover data-table compact">
      <thead>
      <tr>
          @foreach($header as $head)

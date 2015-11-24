@@ -33,8 +33,7 @@ class HomeController extends Controller
                     ORDER BY do';
 
         $table = DB::select($select);
-        $header = ['Vystavované od', 'Vystavované do', 'Názov diela', 
-                   'Autor', 'Typ diela', 'Expozícia'];
+        $header = ['from', 'do', 'art name', 'author', 'type', 'exposition'];
 
         return view("home")->with([
             'header' => $header,

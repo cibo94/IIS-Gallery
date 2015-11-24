@@ -34,7 +34,7 @@ class AuthorizeIfAdmin
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->user()->role != "admin")
+        if (! $this->auth->check() or $this->auth->user()->role != "admin")
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
