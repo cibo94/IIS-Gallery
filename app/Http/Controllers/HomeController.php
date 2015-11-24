@@ -31,7 +31,7 @@ class HomeController extends Controller
                          WHERE EX.IDmiesta = Za.expozicneMiesto
                          AND Za.dielo = D.IDdiela)
                     ORDER BY do';
-                        
+
         $table = DB::select($select);
         $header = ['Vystavované od', 'Vystavované do', 'Názov diela', 
                    'Autor', 'Typ diela', 'Expozícia'];
