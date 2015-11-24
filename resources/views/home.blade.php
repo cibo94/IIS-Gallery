@@ -1,4 +1,4 @@
-@extends('baselayout')
+@extends('layouts.base')
 
 @section('content')
 
@@ -12,6 +12,26 @@
             cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
             proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
+    </div>
+
+    @include('table', ['table' => DB::select('select * from Autor'), 'header' => Schema::getColumnListing('Autor')])
+
+    <div class="form-group label-static">
+        <label for="i2" class="control-label">label-static</label>
+        <input type="email" class="form-control" id="i2" placeholder="placeholder attribute">
+        <p class="help-block">This is a hint as a <code>p.help-block.hint</code></p>
+    </div>
+
+    <div class="form-group label-floating">
+        <label for="i5" class="control-label">label-floating</label>
+        <input type="email" class="form-control" id="i5">
+        <span class="help-block">This is a hint as a <code>span.help-block.hint</code></span>
+    </div>
+
+    <div class="form-group label-placeholder">
+        <label for="i5p" class="control-label">label-placeholder</label>
+        <input type="email" class="form-control" id="i5p">
+        <span class="help-block">This is a hint as a <code>span.help-block.hint</code></span>
     </div>
 
 @stop
