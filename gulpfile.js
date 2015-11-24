@@ -11,11 +11,13 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function(mix) {
+elixir(function (mix) {
     var bpath = 'node_modules/bootstrap-sass/assets';
+    var bmpath = 'resources/assets/vendor/bootstrap-material-design/dist';
     var jqueryPath = 'resources/assets/vendor/jquery';
     mix.sass('app.scss')
-       .copy(jqueryPath + '/dist/jquery.min.js', 'public/js')
-       .copy(bpath + '/fonts', 'public/fonts')
-       .copy(bpath + '/javascripts/bootstrap.min.js', 'public/js');
+        .copy(jqueryPath + '/dist/jquery.min.js', 'public/js')
+        .copy(bpath + '/fonts', 'public/fonts')
+        .copy(bpath + '/javascripts/bootstrap.min.js', 'public/js')
+        .copy(bmpath + '/js/material.min.js', 'public/js');
 });

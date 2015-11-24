@@ -4,11 +4,9 @@
     <title>Laravel is awesome</title>
 
     {!! Html::style('css/app.css') !!}
+    {!! Html::style('css/bootstrap.min.css') !!}
 
-    {!! Html::script('js/jquery.min.js') !!}
-    {!! Html::script('js/bootstrap.min.js') !!}
-
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/css/material.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/css/material.min.css" />
 
 
     <style>
@@ -41,11 +39,19 @@
         </div><!--/.nav-collapse -->
     </div>
 </nav>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/js/material.min.js"></script>
 <body>
-<div class="container">
+<div class="container" style="padding-top: 50px;">
     @yield('content')
 </div><!-- /.container -->
+
+
+
+{!! Html::script('js/jquery.min.js') !!}
+{!! Html::script('js/bootstrap-theme.min.js') !!}
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/js/material.min.js"></script>
+<script>
+    $.material.init();
+</script>
+
 </body>
 </html>

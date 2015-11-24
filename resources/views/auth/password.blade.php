@@ -27,15 +27,15 @@
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
                             {!! csrf_field() !!}
 
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">E-Mail Address</label>
-                                <div class="col-md-6">
+                            <div class="form-group label-floating">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <label for="i5" class="control-label">E-mail</label>
                                     <input type="email" class="form-control" name="email" value="{{ old('email') }}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                                <div class="col-md-6 col-md-offset-1">
                                     <button type="submit" class="btn btn-primary">
                                         Send Password Reset Link
                                     </button>

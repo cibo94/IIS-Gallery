@@ -18,36 +18,35 @@
                             </div>
                         @endif
 
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
+                        <form data-toggle="validator" class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
                             {!! csrf_field() !!}
                             <input type="hidden" name="token" value="{{ $token }}">
 
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">E-Mail Address</label>
-                                <div class="col-md-6">
+                            <div class="form-group label-floating">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <label for="i5" class="control-label">E-mail</label>
                                     <input type="email" class="form-control" name="email" value="{{ old('email') }}">
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Password</label>
-                                <div class="col-md-6">
+                            <div class="form-group label-floating">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <label for="i5" class="control-label">Password</label>
                                     <input type="password" class="form-control" name="password">
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group label-floating">
                                 <label class="col-md-4 control-label">Confirm Password</label>
-                                <div class="col-md-6">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <label for="i5" class="control-label">Confirm Password</label>
                                     <input type="password" class="form-control" name="password_confirmation">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Reset Password
-                                    </button>
+                                <div class="col-md-6 col-md-offset-1">
+                                    <button type="submit" class="btn btn-primary">Reset Password</button>
                                 </div>
                             </div>
                         </form>
