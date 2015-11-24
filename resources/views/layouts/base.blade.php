@@ -21,7 +21,7 @@
 </head>
 
 <nav class="navbar navbar-default navbar-fixed-top navbar-material-blue-grey">
-    <div class="container-fluid">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 <span class="icon-bar"></span>
@@ -32,30 +32,21 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#asd">Page 1 <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Page 1-1</a></li>
-                        <li><a href="#">Page 1-2</a></li>
-                        <li><a href="#">Page 1-3</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="/about">About</a></li>
+                <li><a href="/">home</a></li>
+                <li><a href="/exhibition">exhibition</a></li>
+                <li><a href="/about">about</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::check())
-                    <li><a href="/">Welcome {!! Auth::user()->name !!}</a></li>
-                    <li><a href="/auth/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <li><a href="/">welcome {!! Auth::user()->name !!}</a></li>
+                    <li><a href="/auth/logout"><span class="glyphicon glyphicon-log-out"></span> log-out</a></li>
                 @else
-                    <li><a href="/auth/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    <li><a href="/auth/register"><span class="glyphicon glyphicon-user"></span> Sign in</a></li>
+                    <li><a href="/auth/login"><span class="glyphicon glyphicon-log-in"></span> log-in</a></li>
+                    <li><a href="/auth/register"><span class="glyphicon glyphicon-user"></span> sign-in</a></li>
                 @endif
             </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+        </div><!--/collapse navbar-collapse -->
+    </div><!--/container-fluid -->
 </nav>
 
 <body>

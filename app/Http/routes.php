@@ -16,6 +16,12 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
+Route::get('/exhibition', "ExhibitionController@getGuests");
+
+Route::get('/user/exhibition', ["middleware" => "user", "uses" => "ExhibitionController@getUsers" ]);
+
+Route::get('/admin/exhibition', ["middleware" => "admin", "uses" => "ExhibitionController@getAdmins" ]);
+
 Route::get('/about', function () { return view("about"); });
 
 Route::get('/', 'HomeController@get');

@@ -3,12 +3,9 @@
 @section('content')
 
     <div class="row">
-        <center><h1>Galéria</h1></center>
-        <center><p>Najlepšia neexistujúca galéria na svete</p></center>
-        <center>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg" 
-             style="width:212px;height:308px;">
-        <h2>Práve vystavujeme</h2></center>
+        <h1>Galéria</h1>
+        <p>Najlepšia neexistujúca galéria na svete</p>
+        <h2>Práve vystavujeme</h2>
 
     </div>
 
