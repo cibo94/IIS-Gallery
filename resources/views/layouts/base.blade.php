@@ -6,9 +6,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     {!! Html::style('css/app.css') !!}
-    {!! Html::style('css/bootstrap.min.css') !!}
+
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.css">
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.4.4/css/roboto.min.css" />
@@ -38,7 +37,7 @@
                 <li><a href="/about">about</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if (Auth::check())
+                @if (\Illuminate\Support\Facades\Auth::check())
                     @if (Auth::user()->role == "user")
                         <li><a href="/user/account">
                     @else

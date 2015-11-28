@@ -7,6 +7,8 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -48,6 +50,39 @@ class AuthController extends Controller
             'password' => 'required|confirmed|min:6',
         ]);
     }
+
+    protected $filter_keys = [];
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postRegister(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $later = array();
+
+        foreach ($this->filter_keys as $key) {
+            $later += [$request->request->filter($key)];
+            $request->request->remove($key);
+        }
+
+        $user = $this->create($request->all());
+
+        Auth::login($user);
+
+        return redirect($this->redirectPath());
+    }
+
 
     /**
      * Create a new user instance after a valid registration.

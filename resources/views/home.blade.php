@@ -12,5 +12,5 @@
         </div>
     </div>
 
-    @include('table', ['table' => $table, 'header' => $header])
+    @include('layouts/table', ['table' => $table, 'header' => $header])
 @stop
