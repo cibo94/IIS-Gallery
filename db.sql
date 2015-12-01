@@ -36,7 +36,7 @@ CREATE TABLE `Agentura` (
   `eMail` varchar(30) DEFAULT NULL,
   `IDagentury` int(11) unsigned NOT NULL,
   PRIMARY KEY (`IDagentury`),
-  CONSTRAINT `Agentura_ibfk_1` FOREIGN KEY (`IDagentury`) REFERENCES `users` (`id`)
+  CONSTRAINT `Agentura_ibfk_1` FOREIGN KEY (`IDagentury`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,29 +50,6 @@ LOCK TABLES `Agentura` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Autor`
---
-
-DROP TABLE IF EXISTS `Autor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Autor` (
-  `IDautora` int(11) NOT NULL AUTO_INCREMENT,
-  `meno` varchar(40) NOT NULL,
-  PRIMARY KEY (`IDautora`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Autor`
---
-
-LOCK TABLES `Autor` WRITE;
-/*!40000 ALTER TABLE `Autor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Autor` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Dielo`
 --
 
@@ -83,10 +60,11 @@ CREATE TABLE `Dielo` (
   `IDdiela` int(11) NOT NULL AUTO_INCREMENT,
   `typ` varchar(20) NOT NULL,
   `nazov` varchar(30) NOT NULL,
-  `IDautora` int(11) NOT NULL,
+  `autor` varchar(40) DEFAULT NULL,
+  `IDusera` int(11) unsigned NOT NULL,
   PRIMARY KEY (`IDdiela`),
-  KEY `IDautora` (`IDautora`),
-  CONSTRAINT `Dielo_ibfk_1` FOREIGN KEY (`IDautora`) REFERENCES `Autor` (`IDautora`)
+  KEY `IDusera` (`IDusera`),
+  CONSTRAINT `Dielo_ibfk_1` FOREIGN KEY (`IDusera`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -109,7 +87,9 @@ DROP TABLE IF EXISTS `Expozicia`;
 CREATE TABLE `Expozicia` (
   `IDexpozicie` int(11) NOT NULL AUTO_INCREMENT,
   `nazov` varchar(40) NOT NULL,
-  `IDusera` int(11) unsigned NOT NULL,
+  `odCas` date NOT NULL,
+  `doCas` date NOT NULL,
+  `IDusera` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`IDexpozicie`),
   KEY `IDusera` (`IDusera`),
   CONSTRAINT `Expozicia_ibfk_1` FOREIGN KEY (`IDusera`) REFERENCES `users` (`id`)
@@ -134,7 +114,7 @@ DROP TABLE IF EXISTS `ExpozicneMiesto`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ExpozicneMiesto` (
   `IDmiesta` int(11) NOT NULL AUTO_INCREMENT,
-  `typ` varchar(20) NOT NULL DEFAULT 'NOT SET',
+  `typ` varchar(20) NOT NULL DEFAULT 'stena',
   `velkost` decimal(6,2) NOT NULL,
   `cena` decimal(10,2) NOT NULL,
   `IDmiestnosti` varchar(10) NOT NULL,
@@ -142,8 +122,8 @@ CREATE TABLE `ExpozicneMiesto` (
   PRIMARY KEY (`IDmiesta`),
   KEY `IDmiestnosti` (`IDmiestnosti`),
   KEY `IDzamestnanca` (`IDzamestnanca`),
-  CONSTRAINT `ExpozicneMiesto_ibfk_1` FOREIGN KEY (`IDmiestnosti`) REFERENCES `Miestnost` (`IDmiestnosti`),
-  CONSTRAINT `ExpozicneMiesto_ibfk_2` FOREIGN KEY (`IDzamestnanca`) REFERENCES `Zamestnanec` (`IDzamestnanca`)
+  CONSTRAINT `ExpozicneMiesto_ibfk_1` FOREIGN KEY (`IDmiestnosti`) REFERENCES `Miestnost` (`IDmiestnosti`) ON DELETE CASCADE,
+  CONSTRAINT `ExpozicneMiesto_ibfk_2` FOREIGN KEY (`IDzamestnanca`) REFERENCES `Zamestnanec` (`IDzamestnanca`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -180,30 +160,31 @@ LOCK TABLES `Miestnost` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Obsahuje`
+-- Table structure for table `Poplatok`
 --
 
-DROP TABLE IF EXISTS `Obsahuje`;
+DROP TABLE IF EXISTS `Poplatok`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Obsahuje` (
-  `IDvybavenia` int(11) NOT NULL,
-  `IDmiesta` int(11) NOT NULL,
-  `pocet` int(11) DEFAULT '1',
-  PRIMARY KEY (`IDvybavenia`,`IDmiesta`),
-  KEY `IDmiesta` (`IDmiesta`),
-  CONSTRAINT `Obsahuje_ibfk_1` FOREIGN KEY (`IDvybavenia`) REFERENCES `Vybavenie` (`IDvybavenia`),
-  CONSTRAINT `Obsahuje_ibfk_2` FOREIGN KEY (`IDmiesta`) REFERENCES `ExpozicneMiesto` (`IDmiesta`)
+CREATE TABLE `Poplatok` (
+  `IDpoplatku` int(11) NOT NULL AUTO_INCREMENT,
+  `IDusera` int(11) unsigned DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `datum` date NOT NULL,
+  `suma` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`IDpoplatku`),
+  KEY `IDusera` (`IDusera`),
+  CONSTRAINT `Poplatok_ibfk_1` FOREIGN KEY (`IDusera`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Obsahuje`
+-- Dumping data for table `Poplatok`
 --
 
-LOCK TABLES `Obsahuje` WRITE;
-/*!40000 ALTER TABLE `Obsahuje` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Obsahuje` ENABLE KEYS */;
+LOCK TABLES `Poplatok` WRITE;
+/*!40000 ALTER TABLE `Poplatok` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Poplatok` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -214,12 +195,12 @@ DROP TABLE IF EXISTS `Umelec`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Umelec` (
+  `IDumelca` int(11) unsigned NOT NULL,
   `meno` varchar(20) NOT NULL,
   `priezvisko` varchar(20) NOT NULL,
   `kontakt` varchar(40) DEFAULT NULL,
-  `IDumelca` int(11) unsigned NOT NULL,
   PRIMARY KEY (`IDumelca`),
-  CONSTRAINT `Umelec_ibfk_1` FOREIGN KEY (`IDumelca`) REFERENCES `users` (`id`)
+  CONSTRAINT `Umelec_ibfk_1` FOREIGN KEY (`IDumelca`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -229,7 +210,6 @@ CREATE TABLE `Umelec` (
 
 LOCK TABLES `Umelec` WRITE;
 /*!40000 ALTER TABLE `Umelec` DISABLE KEYS */;
-INSERT INTO `Umelec` VALUES ('Miroslav','Cibulka','9744521',1);
 /*!40000 ALTER TABLE `Umelec` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,6 +238,33 @@ LOCK TABLES `Vybavenie` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Vybavuje`
+--
+
+DROP TABLE IF EXISTS `Vybavuje`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Vybavuje` (
+  `IDvybavenia` int(11) NOT NULL,
+  `IDmiesta` int(11) NOT NULL,
+  `pocet` int(11) DEFAULT '1',
+  PRIMARY KEY (`IDvybavenia`,`IDmiesta`),
+  KEY `IDmiesta` (`IDmiesta`),
+  CONSTRAINT `Vybavuje_ibfk_1` FOREIGN KEY (`IDvybavenia`) REFERENCES `Vybavenie` (`IDvybavenia`) ON DELETE CASCADE,
+  CONSTRAINT `Vybavuje_ibfk_2` FOREIGN KEY (`IDmiesta`) REFERENCES `ExpozicneMiesto` (`IDmiesta`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Vybavuje`
+--
+
+LOCK TABLES `Vybavuje` WRITE;
+/*!40000 ALTER TABLE `Vybavuje` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Vybavuje` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Zahrnuje`
 --
 
@@ -265,17 +272,15 @@ DROP TABLE IF EXISTS `Zahrnuje`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Zahrnuje` (
-  `odCas` date NOT NULL,
-  `doCas` date NOT NULL,
   `expozicia` int(11) NOT NULL,
   `expozicneMiesto` int(11) NOT NULL,
   `dielo` int(11) NOT NULL,
   PRIMARY KEY (`expozicia`,`expozicneMiesto`,`dielo`),
   KEY `expozicneMiesto` (`expozicneMiesto`),
   KEY `dielo` (`dielo`),
-  CONSTRAINT `Zahrnuje_ibfk_1` FOREIGN KEY (`expozicia`) REFERENCES `Expozicia` (`IDexpozicie`),
-  CONSTRAINT `Zahrnuje_ibfk_2` FOREIGN KEY (`expozicneMiesto`) REFERENCES `ExpozicneMiesto` (`IDmiesta`),
-  CONSTRAINT `Zahrnuje_ibfk_3` FOREIGN KEY (`dielo`) REFERENCES `Dielo` (`IDdiela`)
+  CONSTRAINT `Zahrnuje_ibfk_1` FOREIGN KEY (`expozicia`) REFERENCES `Expozicia` (`IDexpozicie`) ON DELETE CASCADE,
+  CONSTRAINT `Zahrnuje_ibfk_2` FOREIGN KEY (`expozicneMiesto`) REFERENCES `ExpozicneMiesto` (`IDmiesta`) ON DELETE CASCADE,
+  CONSTRAINT `Zahrnuje_ibfk_3` FOREIGN KEY (`dielo`) REFERENCES `Dielo` (`IDdiela`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -287,6 +292,33 @@ LOCK TABLES `Zahrnuje` WRITE;
 /*!40000 ALTER TABLE `Zahrnuje` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Zahrnuje` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `Gallery`.`Zahrnuje_AFTER_INSERT` AFTER INSERT ON `Zahrnuje` FOR EACH ROW
+BEGIN
+    DECLARE v_datum DATE;
+    DECLARE v_cena DECIMAL(10,2);
+    DECLARE v_user INT(11);
+    
+    SET @v_cena := (SELECT cena FROM ExpozicneMiesto WHERE IDmiesta = NEW.expozicneMiesto);
+    SET @v_datum := (SELECT odCas FROM Expozicia WHERE IDexpozicie = NEW.expozicia);
+    SET @v_user := (SELECT IDusera FROM Expozicia WHERE IDexpozicie = NEW.expozicia);
+    
+    INSERT INTO Poplatok (IDusera, status, datum, suma)
+           VALUES (v_user, 0, v_datum, v_cena);
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `Zamestnanec`
@@ -302,7 +334,7 @@ CREATE TABLE `Zamestnanec` (
   `priezvisko` varchar(20) NOT NULL,
   `telefon` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`IDzamestnanca`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,7 +343,6 @@ CREATE TABLE `Zamestnanec` (
 
 LOCK TABLES `Zamestnanec` WRITE;
 /*!40000 ALTER TABLE `Zamestnanec` DISABLE KEYS */;
-INSERT INTO `Zamestnanec` VALUES (2,'485615689','asdasd','asdasd','484854'),(3,'45564646','On','Onon','48489'),(4,'root','root','root','root'),(5,'945161551','Lukas','Slouka','84965145614'),(6,'945123121','Miro','Cibulka','8465145614894');
 /*!40000 ALTER TABLE `Zamestnanec` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +420,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Miroslav Cibulka','miroc94@gmail.com','$2y$10$uSgc9Jw8KpjOgCoZYju3K.xErRbXgrTet85bFBP/BfaUIPeg4rdN6','NSQAphufSIOfFYxe6bZLziMBOo4OFqENNCqeQyI9sWns2gXbxzWM1fWmVKvC','2015-12-01 15:49:42','2015-12-01 16:11:06','employee'),(4,'root','root@root.com','$2y$10$cmSGMltMPAKxNgK2e3kRzeL0goDLqiWCMYqPzM8/PxQwFzpU0piY2','X3G73ZWUHI1LradUFT92gzSA4xzFefpnMGPJuLBYPqCL9CHqLnYBsm66d0F8','2015-12-01 16:08:47','2015-12-01 16:11:14','admin'),(5,'Lukas','lukas.slouka@email.com','$2y$10$7CjGMt3cRGEOPGjlgkWvauh./lmQM4RHOTN6Mua2YcVgZtMsp3GhG',NULL,'2015-12-01 16:13:09','2015-12-01 16:13:09','employee'),(6,'Miro','miro.cibulka@email.com','$2y$10$9Ee1RH.20ACYkFteAIdQE.oh88snsaGz1vaCdjt0Vg.oEHtZZnToi',NULL,'2015-12-01 16:15:34','2015-12-01 16:15:34','employee');
+INSERT INTO `users` VALUES (1,'Miroslav Cibulka','miroc94@gmail.com','$2y$10$uSgc9Jw8KpjOgCoZYju3K.xErRbXgrTet85bFBP/BfaUIPeg4rdN6','NSQAphufSIOfFYxe6bZLziMBOo4OFqENNCqeQyI9sWns2gXbxzWM1fWmVKvC','2015-12-01 15:49:42','2015-12-01 16:11:06','employee'),(4,'root','root@root.com','$2y$10$cmSGMltMPAKxNgK2e3kRzeL0goDLqiWCMYqPzM8/PxQwFzpU0piY2','X3G73ZWUHI1LradUFT92gzSA4xzFefpnMGPJuLBYPqCL9CHqLnYBsm66d0F8','2015-12-01 16:08:47','2015-12-01 16:11:14','admin'),(5,'Lukas','lukas.slouka@email.com','$2y$10$7CjGMt3cRGEOPGjlgkWvauh./lmQM4RHOTN6Mua2YcVgZtMsp3GhG','wZBmQkbv0aejja6vp4FC64KoBoqTCVP3UQhlCLfJLLq4deeUhnyZxwZyC28I','2015-12-01 16:13:09','2015-12-01 20:44:52','employee'),(6,'Miro','miro.cibulka@email.com','$2y$10$9Ee1RH.20ACYkFteAIdQE.oh88snsaGz1vaCdjt0Vg.oEHtZZnToi',NULL,'2015-12-01 16:15:34','2015-12-01 16:15:34','employee');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -804,7 +835,7 @@ CREATE TABLE `innodb_index_stats` (
 
 LOCK TABLES `innodb_index_stats` WRITE;
 /*!40000 ALTER TABLE `innodb_index_stats` DISABLE KEYS */;
-INSERT INTO `innodb_index_stats` VALUES ('Gallery','Agentura','PRIMARY','2015-12-01 16:47:09','n_diff_pfx01',0,1,'IDagentury'),('Gallery','Agentura','PRIMARY','2015-12-01 16:47:09','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Agentura','PRIMARY','2015-12-01 16:47:09','size',1,NULL,'Number of pages in the index'),('Gallery','Autor','PRIMARY','2015-12-01 16:47:08','n_diff_pfx01',0,1,'IDautora'),('Gallery','Autor','PRIMARY','2015-12-01 16:47:08','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Autor','PRIMARY','2015-12-01 16:47:08','size',1,NULL,'Number of pages in the index'),('Gallery','Dielo','IDautora','2015-12-01 16:47:09','n_diff_pfx01',0,1,'IDautora'),('Gallery','Dielo','IDautora','2015-12-01 16:47:09','n_diff_pfx02',0,1,'IDautora,IDdiela'),('Gallery','Dielo','IDautora','2015-12-01 16:47:09','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Dielo','IDautora','2015-12-01 16:47:09','size',1,NULL,'Number of pages in the index'),('Gallery','Dielo','PRIMARY','2015-12-01 16:47:09','n_diff_pfx01',0,1,'IDdiela'),('Gallery','Dielo','PRIMARY','2015-12-01 16:47:09','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Dielo','PRIMARY','2015-12-01 16:47:09','size',1,NULL,'Number of pages in the index'),('Gallery','Expozicia','IDusera','2015-12-01 16:47:09','n_diff_pfx01',0,1,'IDusera'),('Gallery','Expozicia','IDusera','2015-12-01 16:47:09','n_diff_pfx02',0,1,'IDusera,IDexpozicie'),('Gallery','Expozicia','IDusera','2015-12-01 16:47:09','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Expozicia','IDusera','2015-12-01 16:47:09','size',1,NULL,'Number of pages in the index'),('Gallery','Expozicia','PRIMARY','2015-12-01 16:47:09','n_diff_pfx01',0,1,'IDexpozicie'),('Gallery','Expozicia','PRIMARY','2015-12-01 16:47:09','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Expozicia','PRIMARY','2015-12-01 16:47:09','size',1,NULL,'Number of pages in the index'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 16:59:24','n_diff_pfx01',0,1,'IDmiestnosti'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 16:59:24','n_diff_pfx02',0,1,'IDmiestnosti,IDmiesta'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 16:59:24','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 16:59:24','size',1,NULL,'Number of pages in the index'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 16:59:24','n_diff_pfx01',0,1,'IDzamestnanca'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 16:59:24','n_diff_pfx02',0,1,'IDzamestnanca,IDmiesta'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 16:59:24','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 16:59:24','size',1,NULL,'Number of pages in the index'),('Gallery','ExpozicneMiesto','PRIMARY','2015-12-01 16:59:24','n_diff_pfx01',0,1,'IDmiesta'),('Gallery','ExpozicneMiesto','PRIMARY','2015-12-01 16:59:24','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','ExpozicneMiesto','PRIMARY','2015-12-01 16:59:24','size',1,NULL,'Number of pages in the index'),('Gallery','Miestnost','PRIMARY','2015-12-01 16:47:07','n_diff_pfx01',0,1,'IDmiestnosti'),('Gallery','Miestnost','PRIMARY','2015-12-01 16:47:07','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Miestnost','PRIMARY','2015-12-01 16:47:07','size',1,NULL,'Number of pages in the index'),('Gallery','Obsahuje','IDmiesta','2015-12-01 16:47:08','n_diff_pfx01',0,1,'IDmiesta'),('Gallery','Obsahuje','IDmiesta','2015-12-01 16:47:08','n_diff_pfx02',0,1,'IDmiesta,IDvybavenia'),('Gallery','Obsahuje','IDmiesta','2015-12-01 16:47:08','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Obsahuje','IDmiesta','2015-12-01 16:47:08','size',1,NULL,'Number of pages in the index'),('Gallery','Obsahuje','PRIMARY','2015-12-01 16:47:08','n_diff_pfx01',0,1,'IDvybavenia'),('Gallery','Obsahuje','PRIMARY','2015-12-01 16:47:08','n_diff_pfx02',0,1,'IDvybavenia,IDmiesta'),('Gallery','Obsahuje','PRIMARY','2015-12-01 16:47:08','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Obsahuje','PRIMARY','2015-12-01 16:47:08','size',1,NULL,'Number of pages in the index'),('Gallery','Umelec','PRIMARY','2015-12-01 16:47:09','n_diff_pfx01',0,1,'IDumelca'),('Gallery','Umelec','PRIMARY','2015-12-01 16:47:09','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Umelec','PRIMARY','2015-12-01 16:47:09','size',1,NULL,'Number of pages in the index'),('Gallery','Vybavenie','PRIMARY','2015-12-01 16:47:08','n_diff_pfx01',0,1,'IDvybavenia'),('Gallery','Vybavenie','PRIMARY','2015-12-01 16:47:08','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Vybavenie','PRIMARY','2015-12-01 16:47:08','size',1,NULL,'Number of pages in the index'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 16:47:10','n_diff_pfx01',0,1,'expozicia'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 16:47:10','n_diff_pfx02',0,1,'expozicia,expozicneMiesto'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 16:47:10','n_diff_pfx03',0,1,'expozicia,expozicneMiesto,dielo'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 16:47:10','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 16:47:10','size',1,NULL,'Number of pages in the index'),('Gallery','Zahrnuje','dielo','2015-12-01 16:47:10','n_diff_pfx01',0,1,'dielo'),('Gallery','Zahrnuje','dielo','2015-12-01 16:47:10','n_diff_pfx02',0,1,'dielo,expozicia'),('Gallery','Zahrnuje','dielo','2015-12-01 16:47:10','n_diff_pfx03',0,1,'dielo,expozicia,expozicneMiesto'),('Gallery','Zahrnuje','dielo','2015-12-01 16:47:10','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zahrnuje','dielo','2015-12-01 16:47:10','size',1,NULL,'Number of pages in the index'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 16:47:10','n_diff_pfx01',0,1,'expozicneMiesto'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 16:47:10','n_diff_pfx02',0,1,'expozicneMiesto,expozicia'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 16:47:10','n_diff_pfx03',0,1,'expozicneMiesto,expozicia,dielo'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 16:47:10','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 16:47:10','size',1,NULL,'Number of pages in the index'),('Gallery','Zamestnanec','PRIMARY','2015-12-01 17:13:09','n_diff_pfx01',4,1,'IDzamestnanca'),('Gallery','Zamestnanec','PRIMARY','2015-12-01 17:13:09','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zamestnanec','PRIMARY','2015-12-01 17:13:09','size',1,NULL,'Number of pages in the index'),('Gallery','migrations','GEN_CLUST_INDEX','2015-12-01 15:21:34','n_diff_pfx01',0,1,'DB_ROW_ID'),('Gallery','migrations','GEN_CLUST_INDEX','2015-12-01 15:21:34','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','migrations','GEN_CLUST_INDEX','2015-12-01 15:21:34','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-12-01 15:21:42','n_diff_pfx01',0,1,'DB_ROW_ID'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-12-01 15:21:42','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-12-01 15:21:42','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','n_diff_pfx01',0,1,'email'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','n_diff_pfx02',0,1,'email,DB_ROW_ID'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','n_diff_pfx01',0,1,'token'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','n_diff_pfx02',0,1,'token,DB_ROW_ID'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','size',1,NULL,'Number of pages in the index'),('Gallery','users','PRIMARY','2015-12-01 17:15:34','n_diff_pfx01',4,1,'id'),('Gallery','users','PRIMARY','2015-12-01 17:15:34','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','users','PRIMARY','2015-12-01 17:15:34','size',1,NULL,'Number of pages in the index'),('Gallery','users','users_email_unique','2015-12-01 17:15:34','n_diff_pfx01',4,1,'email'),('Gallery','users','users_email_unique','2015-12-01 17:15:34','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','users','users_email_unique','2015-12-01 17:15:34','size',1,NULL,'Number of pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx01',0,1,'domain_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx02',0,1,'domain_id,sub_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','size',1,NULL,'Number of pages in the index');
+INSERT INTO `innodb_index_stats` VALUES ('Gallery','Agentura','PRIMARY','2015-12-01 21:37:37','n_diff_pfx01',0,1,'IDagentury'),('Gallery','Agentura','PRIMARY','2015-12-01 21:37:37','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Agentura','PRIMARY','2015-12-01 21:37:37','size',1,NULL,'Number of pages in the index'),('Gallery','Dielo','IDusera','2015-12-01 21:37:36','n_diff_pfx01',0,1,'IDusera'),('Gallery','Dielo','IDusera','2015-12-01 21:37:36','n_diff_pfx02',0,1,'IDusera,IDdiela'),('Gallery','Dielo','IDusera','2015-12-01 21:37:36','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Dielo','IDusera','2015-12-01 21:37:36','size',1,NULL,'Number of pages in the index'),('Gallery','Dielo','PRIMARY','2015-12-01 21:37:36','n_diff_pfx01',0,1,'IDdiela'),('Gallery','Dielo','PRIMARY','2015-12-01 21:37:36','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Dielo','PRIMARY','2015-12-01 21:37:36','size',1,NULL,'Number of pages in the index'),('Gallery','Expozicia','IDusera','2015-12-01 21:37:37','n_diff_pfx01',0,1,'IDusera'),('Gallery','Expozicia','IDusera','2015-12-01 21:37:37','n_diff_pfx02',0,1,'IDusera,IDexpozicie'),('Gallery','Expozicia','IDusera','2015-12-01 21:37:37','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Expozicia','IDusera','2015-12-01 21:37:37','size',1,NULL,'Number of pages in the index'),('Gallery','Expozicia','PRIMARY','2015-12-01 21:37:37','n_diff_pfx01',0,1,'IDexpozicie'),('Gallery','Expozicia','PRIMARY','2015-12-01 21:37:37','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Expozicia','PRIMARY','2015-12-01 21:37:37','size',1,NULL,'Number of pages in the index'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 21:37:35','n_diff_pfx01',0,1,'IDmiestnosti'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 21:37:35','n_diff_pfx02',0,1,'IDmiestnosti,IDmiesta'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 21:37:35','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','ExpozicneMiesto','IDmiestnosti','2015-12-01 21:37:35','size',1,NULL,'Number of pages in the index'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 21:37:35','n_diff_pfx01',0,1,'IDzamestnanca'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 21:37:35','n_diff_pfx02',0,1,'IDzamestnanca,IDmiesta'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 21:37:35','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','ExpozicneMiesto','IDzamestnanca','2015-12-01 21:37:35','size',1,NULL,'Number of pages in the index'),('Gallery','ExpozicneMiesto','PRIMARY','2015-12-01 21:37:35','n_diff_pfx01',0,1,'IDmiesta'),('Gallery','ExpozicneMiesto','PRIMARY','2015-12-01 21:37:35','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','ExpozicneMiesto','PRIMARY','2015-12-01 21:37:35','size',1,NULL,'Number of pages in the index'),('Gallery','Miestnost','PRIMARY','2015-12-01 21:37:35','n_diff_pfx01',0,1,'IDmiestnosti'),('Gallery','Miestnost','PRIMARY','2015-12-01 21:37:35','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Miestnost','PRIMARY','2015-12-01 21:37:35','size',1,NULL,'Number of pages in the index'),('Gallery','Poplatok','IDusera','2015-12-01 21:37:38','n_diff_pfx01',0,1,'IDusera'),('Gallery','Poplatok','IDusera','2015-12-01 21:37:38','n_diff_pfx02',0,1,'IDusera,IDpoplatku'),('Gallery','Poplatok','IDusera','2015-12-01 21:37:38','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Poplatok','IDusera','2015-12-01 21:37:38','size',1,NULL,'Number of pages in the index'),('Gallery','Poplatok','PRIMARY','2015-12-01 21:37:38','n_diff_pfx01',0,1,'IDpoplatku'),('Gallery','Poplatok','PRIMARY','2015-12-01 21:37:38','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Poplatok','PRIMARY','2015-12-01 21:37:38','size',1,NULL,'Number of pages in the index'),('Gallery','Umelec','PRIMARY','2015-12-01 21:37:37','n_diff_pfx01',0,1,'IDumelca'),('Gallery','Umelec','PRIMARY','2015-12-01 21:37:37','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Umelec','PRIMARY','2015-12-01 21:37:37','size',1,NULL,'Number of pages in the index'),('Gallery','Vybavenie','PRIMARY','2015-12-01 21:37:35','n_diff_pfx01',0,1,'IDvybavenia'),('Gallery','Vybavenie','PRIMARY','2015-12-01 21:37:35','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Vybavenie','PRIMARY','2015-12-01 21:37:35','size',1,NULL,'Number of pages in the index'),('Gallery','Vybavuje','IDmiesta','2015-12-01 21:37:36','n_diff_pfx01',0,1,'IDmiesta'),('Gallery','Vybavuje','IDmiesta','2015-12-01 21:37:36','n_diff_pfx02',0,1,'IDmiesta,IDvybavenia'),('Gallery','Vybavuje','IDmiesta','2015-12-01 21:37:36','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Vybavuje','IDmiesta','2015-12-01 21:37:36','size',1,NULL,'Number of pages in the index'),('Gallery','Vybavuje','PRIMARY','2015-12-01 21:37:36','n_diff_pfx01',0,1,'IDvybavenia'),('Gallery','Vybavuje','PRIMARY','2015-12-01 21:37:36','n_diff_pfx02',0,1,'IDvybavenia,IDmiesta'),('Gallery','Vybavuje','PRIMARY','2015-12-01 21:37:36','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Vybavuje','PRIMARY','2015-12-01 21:37:36','size',1,NULL,'Number of pages in the index'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 21:37:38','n_diff_pfx01',0,1,'expozicia'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 21:37:38','n_diff_pfx02',0,1,'expozicia,expozicneMiesto'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 21:37:38','n_diff_pfx03',0,1,'expozicia,expozicneMiesto,dielo'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 21:37:38','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zahrnuje','PRIMARY','2015-12-01 21:37:38','size',1,NULL,'Number of pages in the index'),('Gallery','Zahrnuje','dielo','2015-12-01 21:37:38','n_diff_pfx01',0,1,'dielo'),('Gallery','Zahrnuje','dielo','2015-12-01 21:37:38','n_diff_pfx02',0,1,'dielo,expozicia'),('Gallery','Zahrnuje','dielo','2015-12-01 21:37:38','n_diff_pfx03',0,1,'dielo,expozicia,expozicneMiesto'),('Gallery','Zahrnuje','dielo','2015-12-01 21:37:38','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zahrnuje','dielo','2015-12-01 21:37:38','size',1,NULL,'Number of pages in the index'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 21:37:38','n_diff_pfx01',0,1,'expozicneMiesto'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 21:37:38','n_diff_pfx02',0,1,'expozicneMiesto,expozicia'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 21:37:38','n_diff_pfx03',0,1,'expozicneMiesto,expozicia,dielo'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 21:37:38','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zahrnuje','expozicneMiesto','2015-12-01 21:37:38','size',1,NULL,'Number of pages in the index'),('Gallery','Zamestnanec','PRIMARY','2015-12-01 21:37:34','n_diff_pfx01',0,1,'IDzamestnanca'),('Gallery','Zamestnanec','PRIMARY','2015-12-01 21:37:34','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','Zamestnanec','PRIMARY','2015-12-01 21:37:34','size',1,NULL,'Number of pages in the index'),('Gallery','migrations','GEN_CLUST_INDEX','2015-12-01 15:21:34','n_diff_pfx01',0,1,'DB_ROW_ID'),('Gallery','migrations','GEN_CLUST_INDEX','2015-12-01 15:21:34','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','migrations','GEN_CLUST_INDEX','2015-12-01 15:21:34','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-12-01 15:21:42','n_diff_pfx01',0,1,'DB_ROW_ID'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-12-01 15:21:42','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-12-01 15:21:42','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','n_diff_pfx01',0,1,'email'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','n_diff_pfx02',0,1,'email,DB_ROW_ID'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-12-01 15:21:42','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','n_diff_pfx01',0,1,'token'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','n_diff_pfx02',0,1,'token,DB_ROW_ID'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-12-01 15:21:42','size',1,NULL,'Number of pages in the index'),('Gallery','users','PRIMARY','2015-12-01 17:15:34','n_diff_pfx01',4,1,'id'),('Gallery','users','PRIMARY','2015-12-01 17:15:34','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','users','PRIMARY','2015-12-01 17:15:34','size',1,NULL,'Number of pages in the index'),('Gallery','users','users_email_unique','2015-12-01 17:15:34','n_diff_pfx01',4,1,'email'),('Gallery','users','users_email_unique','2015-12-01 17:15:34','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','users','users_email_unique','2015-12-01 17:15:34','size',1,NULL,'Number of pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx01',0,1,'domain_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx02',0,1,'domain_id,sub_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','size',1,NULL,'Number of pages in the index');
 /*!40000 ALTER TABLE `innodb_index_stats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -832,7 +863,7 @@ CREATE TABLE `innodb_table_stats` (
 
 LOCK TABLES `innodb_table_stats` WRITE;
 /*!40000 ALTER TABLE `innodb_table_stats` DISABLE KEYS */;
-INSERT INTO `innodb_table_stats` VALUES ('Gallery','Agentura','2015-12-01 16:47:09',0,1,0),('Gallery','Autor','2015-12-01 16:47:08',0,1,0),('Gallery','Dielo','2015-12-01 16:47:09',0,1,1),('Gallery','Expozicia','2015-12-01 16:47:09',0,1,1),('Gallery','ExpozicneMiesto','2015-12-01 16:59:24',0,1,2),('Gallery','Miestnost','2015-12-01 16:47:07',0,1,0),('Gallery','Obsahuje','2015-12-01 16:47:08',0,1,1),('Gallery','Umelec','2015-12-01 16:47:09',0,1,0),('Gallery','Vybavenie','2015-12-01 16:47:08',0,1,0),('Gallery','Zahrnuje','2015-12-01 16:47:10',0,1,2),('Gallery','Zamestnanec','2015-12-01 17:13:09',4,1,0),('Gallery','migrations','2015-12-01 15:21:34',0,1,0),('Gallery','password_resets','2015-12-01 15:21:42',0,1,2),('Gallery','users','2015-12-01 17:15:34',4,1,1),('mysql','gtid_slave_pos','2015-11-22 21:30:43',0,1,0);
+INSERT INTO `innodb_table_stats` VALUES ('Gallery','Agentura','2015-12-01 21:37:37',0,1,0),('Gallery','Dielo','2015-12-01 21:37:36',0,1,1),('Gallery','Expozicia','2015-12-01 21:37:37',0,1,1),('Gallery','ExpozicneMiesto','2015-12-01 21:37:35',0,1,2),('Gallery','Miestnost','2015-12-01 21:37:35',0,1,0),('Gallery','Poplatok','2015-12-01 21:37:38',0,1,1),('Gallery','Umelec','2015-12-01 21:37:37',0,1,0),('Gallery','Vybavenie','2015-12-01 21:37:35',0,1,0),('Gallery','Vybavuje','2015-12-01 21:37:36',0,1,1),('Gallery','Zahrnuje','2015-12-01 21:37:38',0,1,2),('Gallery','Zamestnanec','2015-12-01 21:37:34',0,1,0),('Gallery','migrations','2015-12-01 15:21:34',0,1,0),('Gallery','password_resets','2015-12-01 15:21:42',0,1,2),('Gallery','users','2015-12-01 17:15:34',4,1,1),('mysql','gtid_slave_pos','2015-11-22 21:30:43',0,1,0);
 /*!40000 ALTER TABLE `innodb_table_stats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1309,4 +1340,4 @@ CREATE TABLE IF NOT EXISTS `slow_log` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-01 18:22:26
+-- Dump completed on 2015-12-01 22:46:44

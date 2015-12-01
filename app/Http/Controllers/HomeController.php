@@ -18,14 +18,13 @@ class HomeController extends Controller
 
         $date = 
         // Select vsetky vystavovane diela
-        $select = 'SELECT Z.odCas od, Z.doCas do, D.nazov Nazov, 
-                          A.meno, D.typ Typ, E.Nazov Nazov_Expozicie
-                    FROM Autor A 
-                    INNER JOIN Dielo D ON A.IDAUTORA = D.IDAUTORA
-                    INNER JOIN Zahrnuje Z ON Z.DIELO = D.IDDIELA 
-                                             AND Z.doCas >= CURDATE()
-                                             AND Z.odCas <= CURDATE()
-                    INNER JOIN Expozicia E WHERE E.IDexpozicie IN 
+        $select = 'SELECT E.odCas od, E.doCas do, D.nazov Nazov, 
+                          D.autor, D.typ Typ, E.Nazov Nazov_Expozicie
+                    FROM Dielo D
+                    INNER JOIN Zahrnuje Za ON Za.DIELO = D.IDdiela
+                    INNER JOIN Expozicia E WHERE E.doCas >= CURDATE() AND
+                                                 E.odCas <= CURDATE() AND
+                                                 E.IDexpozicie IN 
                         (SELECT Za.expozicia
                          FROM ExpozicneMiesto EX, Zahrnuje Za
                          WHERE EX.IDmiesta = Za.expozicneMiesto
@@ -33,7 +32,7 @@ class HomeController extends Controller
                     ORDER BY do';
 
         $table = DB::select($select);
-        $header = ['from', 'do', 'art name', 'author', 'type', 'exposition'];
+        $header = ['from', 'to', 'art name', 'author', 'type', 'exposition'];
 
         return view("home")->with([
             'header' => $header,
