@@ -35,6 +35,11 @@
                 <li><a href="/">home</a></li>
                 <li><a href="/exhibition">exhibition</a></li>
                 <li><a href="/about">about</a></li>
+                @if (\Illuminate\Support\Facades\Auth::check())
+                    @if (Auth::user()->role == "admin")
+                        <li><a href="/insert/employee">manage employees</a></li>
+                    @endif
+                @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if (\Illuminate\Support\Facades\Auth::check())

@@ -16,6 +16,10 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
+Route::controllers([
+    'insert' => 'Inserters\EmployeeInsertController'
+]);
+
 Route::get('/user/account', ['middleware' => "user", "uses" => "AccountController@show"]);
 
 Route::get('/admin/account', ['middleware' => "admin", "uses" => "AccountController@show"]);

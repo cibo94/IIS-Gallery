@@ -78,26 +78,23 @@ class AuthController extends Controller
                 $request->request->remove($key);
             }
         }
-        $zak_id = DB::table("Zakaznik")->insertGetId([]);
+
+        $user = $this->create($request->all());
 
         if ($request->request->get("role") == "agency")
             DB::table("Agentura")->insert([
                 "nazov" => $later["agency-name"],
                 "web" => $later["web"],
                 "eMail" => $request->request->get("email"),
-                "IDagentury" => $zak_id
+                "IDagentury" => $user->id,
             ]);
         else
             DB::table("Umelec")->insert([
                 "meno" => $later["first-name"],
                 "priezvisko" => $later["last-name"],
                 "kontakt" => $later["contact"],
-                "IDumelca" => $zak_id
+                "IDumelca" => $user->id,
             ]);
-
-        $user = $this->create($request->all());
-
-        DB::update("update users set fkid='$zak_id' where email='".$request->request->get("email")."'");
 
         Auth::login($user);
 
