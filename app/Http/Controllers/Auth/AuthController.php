@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -39,24 +40,24 @@ class AuthController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:Zakaznik',
+            'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
     }
 
-    protected $filter_keys = [];
+    protected $filter_keys = ["agency-name", "web", "first-name", "last-name", "contact"];
 
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function postRegister(Request $request)
@@ -72,11 +73,31 @@ class AuthController extends Controller
         $later = array();
 
         foreach ($this->filter_keys as $key) {
-            $later += [$request->request->filter($key)];
-            $request->request->remove($key);
+            if($request->request->get($key) != null) {
+                $later[$key] = $request->request->get($key);
+                $request->request->remove($key);
+            }
         }
+        $zak_id = DB::table("Zakaznik")->insertGetId([]);
+
+        if ($request->request->get("role") == "agency")
+            DB::table("Agentura")->insert([
+                "nazov" => $later["agency-name"],
+                "web" => $later["web"],
+                "eMail" => $request->request->get("email"),
+                "IDagentury" => $zak_id
+            ]);
+        else
+            DB::table("Umelec")->insert([
+                "meno" => $later["first-name"],
+                "priezvisko" => $later["last-name"],
+                "kontakt" => $later["contact"],
+                "IDumelca" => $zak_id
+            ]);
 
         $user = $this->create($request->all());
+
+        DB::update("update users set fkid='$zak_id' where email='".$request->request->get("email")."'");
 
         Auth::login($user);
 
@@ -87,7 +108,7 @@ class AuthController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)
@@ -95,8 +116,7 @@ class AuthController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'type' => 'client',
+            'password' => bcrypt($data['password'])
         ]);
     }
 }

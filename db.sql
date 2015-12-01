@@ -45,7 +45,7 @@ CREATE TABLE `Agentura` (
 
 LOCK TABLES `Agentura` WRITE;
 /*!40000 ALTER TABLE `Agentura` DISABLE KEYS */;
-INSERT INTO `Agentura` VALUES ('Narodna maliarska agentura','www.nma.sk','info@nma.sk',1),('Picasso corporation','www.picassoformoney.com',NULL,2);
+INSERT INTO `Agentura` VALUES ('Trololondia','http://www.trolololo.com/','from@trololo.com',2);
 /*!40000 ALTER TABLE `Agentura` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +87,7 @@ CREATE TABLE `Dielo` (
   `IDautora` int(11) NOT NULL,
   PRIMARY KEY (`IDdiela`),
   KEY `FK_dielo_autor` (`IDautora`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ CREATE TABLE `Dielo` (
 
 LOCK TABLES `Dielo` WRITE;
 /*!40000 ALTER TABLE `Dielo` DISABLE KEYS */;
-INSERT INTO `Dielo` VALUES (1,'malba','Mona Lisa',1),(2,'malba','Cat Catching a Bird',2),(3,'malba','Child with a Dove',2),(4,'socha','Tatransky medved',3),(5,'socha','Pista ide z krcmy',3),(6,'malba','Accordionist',2),(7,'malba','Acrobat',2),(8,'malba','Boy with Pipe',2),(9,'malba','The Dream',2),(10,'malba','Mother and Child',2),(11,'malba','La femme au metier',4),(12,'malba','Seina u Argenteuil',4),(13,'malba','Rybarske lode opousti pristav ',4),(14,'socha','Srdce hory',3),(15,'socha','Valaska',3);
+INSERT INTO `Dielo` VALUES (1,'malba','Mona Lisa',1),(2,'malba','Cat Catching a Bird',2),(3,'malba','Child with a Dove',2),(4,'socha','Tatransky medved',3),(5,'socha','Pista ide z krcmy',3),(6,'malba','La femme au metier',4),(7,'malba','Accordionist',2),(8,'malba','Acrobat',2),(9,'malba','Boy with Pipe',2),(10,'malba','The Dream',2),(11,'malba','Mother and Child',2),(12,'malba','La femme au metier',4),(13,'malba','Seina u Argenteuil',4),(14,'malba','Rybarske lode opousti pristav ',4),(15,'socha','Srdce hory',3),(16,'socha','Valaska',3);
 /*!40000 ALTER TABLE `Dielo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `Expozicia` (
   `IDzakaznika` int(11) NOT NULL,
   PRIMARY KEY (`IDexpozicie`),
   KEY `FK_expozicia_majitel` (`IDzakaznika`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `Expozicia` (
 
 LOCK TABLES `Expozicia` WRITE;
 /*!40000 ALTER TABLE `Expozicia` DISABLE KEYS */;
-INSERT INTO `Expozicia` VALUES (1,'Vyznamne malby',1),(2,'Drevene sochy',3),(3,'Kubizmus',2),(4,'Malby 2015',1),(5,'Malby impersionizmu',2),(6,'Velka expozicia soch',3);
+INSERT INTO `Expozicia` VALUES (1,'Vyznamne malby',1),(2,'Drevene sochy',3),(3,'Kubizmus',2),(4,'Malby 2015',1),(5,'Malby 2015',1),(6,'Malby 2015',1),(7,'Malby impersionizmu',2),(8,'Velka expozicia soch',3);
 /*!40000 ALTER TABLE `Expozicia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +226,7 @@ CREATE TABLE `Umelec` (
 
 LOCK TABLES `Umelec` WRITE;
 /*!40000 ALTER TABLE `Umelec` DISABLE KEYS */;
-INSERT INTO `Umelec` VALUES ('Jozef','Podkrivansky','0907 525 355',3);
+INSERT INTO `Umelec` VALUES ('Miroslav','Cibulka','sad story',1),('Watafaka','Watafak','watwatwat',3);
 /*!40000 ALTER TABLE `Umelec` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,15 +293,8 @@ DROP TABLE IF EXISTS `Zakaznik`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Zakaznik` (
   `IDzakaznika` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(60) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `role` varchar(45) DEFAULT 'user',
   PRIMARY KEY (`IDzakaznika`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -310,7 +303,7 @@ CREATE TABLE `Zakaznik` (
 
 LOCK TABLES `Zakaznik` WRITE;
 /*!40000 ALTER TABLE `Zakaznik` DISABLE KEYS */;
-INSERT INTO `Zakaznik` VALUES (1,'trol','trol@trolovina.cz','$2y$10$V5DZfibKKt.cB3PDJE6vyuYO30ugfGDK0DEiZ6SpTZ9J.3UBf0A4a','Ul5Xs0rHACUKIaZzRSMRrzTMm54hgg6Owtm8WjBwbsjLuvTTSGHJwLQEjcWQ','2015-11-24 21:38:12','2015-11-24 21:38:26','user'),(2,'Miroslav Cibulka','miroc94@gmail.com','$2y$10$iMkUAoqArV4JW8eL./.uA./lecqkfwRyiMiKMRiZGqU15OZsQc0Fy','bBL7LVhdUazeSwnnLdufgYABdyYnQ01VqZYHZCdC0Jo7JnaV3PeiiQD2UD1Y','2015-11-24 21:38:36','2015-11-24 22:07:26','user'),(3,'Admin','admin@ebm.com','$2y$10$uADbccHKoRFCh.tSqgwHiOoU8YZVOruo8O1YwgWaSEwO2k10kt1vG','vCFxAd6wjqM1ZKkvtJG3zjkpBKVhFZ8rGIakGLt1oXC5R17B50jhdTUgeGik','2015-11-24 21:39:32','2015-11-24 21:42:33','admin'),(4,'fourth','fourth@e.e','$2y$10$EJZu7m9Y9hBQviHP5Eeb1ucHWLrDM0JGXSVHUK./vvko8Wd3RjWNK','tnYvDXv6KT5Te7rB7JbaHpx4X9ODqRGKE0TG1BlCxCgH0Lw0DCBmI21ZEZYa','2015-11-24 21:41:12','2015-11-24 21:41:31','user');
+INSERT INTO `Zakaznik` VALUES (1),(2),(3);
 /*!40000 ALTER TABLE `Zakaznik` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,7 +353,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES ('2014_10_12_000000_create_users_table',1),('2014_10_12_100000_create_password_resets_table',1),('2015_11_24_114515_create_users_table',2);
+INSERT INTO `migrations` VALUES ('2014_10_12_000000_create_users_table',1),('2014_10_12_100000_create_password_resets_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,6 +380,39 @@ CREATE TABLE `password_resets` (
 LOCK TABLES `password_resets` WRITE;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `role` varchar(45) COLLATE utf8_unicode_ci DEFAULT 'user',
+  `fkid` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  UNIQUE KEY `fkid_UNIQUE` (`fkid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (3,'Miroslav Cibulka','miroc94@gmail.com','$2y$10$kWKUWTe/YimjP1fnFDxkiu2iKV0OYhQlZfvPMoyZn0QIEYG0go76C','iC8KgOeGYNLJY03WJS7qHpNiPtclkSqTNSHO0nkI5LVguwKMUdy4OuXlTa2u','2015-11-30 14:35:21','2015-11-30 14:35:28','user','1'),(4,'Trololo','from@trololo.com','$2y$10$1Olp2Qu0knd9TuJSnPyVsuhdF.y95Bs1dvT1OQ5iuh.pzfsbOM6tS','U97AzlOHdY51IlJiFIYkgpzSK38wgy3o7Uu4k92ARojtzRNIIKIA8jWdjwx8','2015-11-30 14:36:15','2015-11-30 14:36:21','user','2'),(5,'Wat','wat@fuck.com','$2y$10$PumDR8wH80ipiCN/ixRMhe3qxGOAKmgHF1M//QY6zcP2tG5hYRCZS',NULL,'2015-11-30 14:37:13','2015-11-30 14:37:13','user','3');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -800,7 +826,7 @@ CREATE TABLE `innodb_index_stats` (
 
 LOCK TABLES `innodb_index_stats` WRITE;
 /*!40000 ALTER TABLE `innodb_index_stats` DISABLE KEYS */;
-INSERT INTO `innodb_index_stats` VALUES ('Gallery','migrations','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_diff_pfx01',2,1,'DB_ROW_ID'),('Gallery','migrations','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','migrations','GEN_CLUST_INDEX','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_diff_pfx01',0,1,'DB_ROW_ID'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','n_diff_pfx01',0,1,'email'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','n_diff_pfx02',0,1,'email,DB_ROW_ID'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','n_diff_pfx01',0,1,'token'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','n_diff_pfx02',0,1,'token,DB_ROW_ID'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx01',0,1,'domain_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx02',0,1,'domain_id,sub_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','size',1,NULL,'Number of pages in the index');
+INSERT INTO `innodb_index_stats` VALUES ('Gallery','migrations','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_diff_pfx01',2,1,'DB_ROW_ID'),('Gallery','migrations','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','migrations','GEN_CLUST_INDEX','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_diff_pfx01',0,1,'DB_ROW_ID'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','GEN_CLUST_INDEX','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','n_diff_pfx01',0,1,'email'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','n_diff_pfx02',0,1,'email,DB_ROW_ID'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_email_index','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','n_diff_pfx01',0,1,'token'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','n_diff_pfx02',0,1,'token,DB_ROW_ID'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','password_resets','password_resets_token_index','2015-11-24 11:44:57','size',1,NULL,'Number of pages in the index'),('Gallery','users','PRIMARY','2015-11-30 15:37:13','n_diff_pfx01',3,1,'id'),('Gallery','users','PRIMARY','2015-11-30 15:37:13','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','users','PRIMARY','2015-11-30 15:37:13','size',1,NULL,'Number of pages in the index'),('Gallery','users','fkid_UNIQUE','2015-11-30 15:37:13','n_diff_pfx01',3,1,'fkid'),('Gallery','users','fkid_UNIQUE','2015-11-30 15:37:13','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','users','fkid_UNIQUE','2015-11-30 15:37:13','size',1,NULL,'Number of pages in the index'),('Gallery','users','users_email_unique','2015-11-30 15:37:13','n_diff_pfx01',3,1,'email'),('Gallery','users','users_email_unique','2015-11-30 15:37:13','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('Gallery','users','users_email_unique','2015-11-30 15:37:13','size',1,NULL,'Number of pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx01',0,1,'domain_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_diff_pfx02',0,1,'domain_id,sub_id'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','n_leaf_pages',1,NULL,'Number of leaf pages in the index'),('mysql','gtid_slave_pos','PRIMARY','2015-11-22 21:30:43','size',1,NULL,'Number of pages in the index');
 /*!40000 ALTER TABLE `innodb_index_stats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -828,7 +854,7 @@ CREATE TABLE `innodb_table_stats` (
 
 LOCK TABLES `innodb_table_stats` WRITE;
 /*!40000 ALTER TABLE `innodb_table_stats` DISABLE KEYS */;
-INSERT INTO `innodb_table_stats` VALUES ('Gallery','migrations','2015-11-24 11:44:57',2,1,0),('Gallery','password_resets','2015-11-24 11:44:57',0,1,0),('mysql','gtid_slave_pos','2015-11-22 21:30:43',0,1,0);
+INSERT INTO `innodb_table_stats` VALUES ('Gallery','migrations','2015-11-24 11:44:57',2,1,0),('Gallery','password_resets','2015-11-24 11:44:57',0,1,0),('Gallery','users','2015-11-30 15:37:13',3,1,2),('mysql','gtid_slave_pos','2015-11-22 21:30:43',0,1,0);
 /*!40000 ALTER TABLE `innodb_table_stats` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1305,4 +1331,4 @@ CREATE TABLE IF NOT EXISTS `slow_log` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-25  0:10:05
+-- Dump completed on 2015-12-01 14:41:56
