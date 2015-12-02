@@ -40,6 +40,7 @@
                         <li><a href="/man_employee/employee">manage employees</a></li>
                     @elseif (Auth::user()->role == "user")
                         <li><a href="/man_artwork/artwork">manage artwork</a></li>
+                        <li><a href="/man_exposition/exposition">manage expositions</a></li>
                     @endif
                 @endif
             </ul>
