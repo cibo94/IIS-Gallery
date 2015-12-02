@@ -2,13 +2,13 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="col-xs-12">
-            <h1>Exposition management</h1>
 
-            <p>Following table displays your expositions. You can create new exposition by
-                filling table header and pressing insert button below.</p>
+    <div class="row">
+        <div class="col-xs-12" style="text-align: center">
+            <h1>Exposition management</h1>
+            <br>
             <p>Please insert dates in <b>DD-MM-YYYY</b> (day-month-year) format.</p>
+            <br>
         </div>
     </div>
 

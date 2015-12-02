@@ -3,11 +3,9 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12" style="text-align: center">
             <h1>Artwork management</h1>
-
-            <p>Following table displays your artwork. You can add new artwork by filling table
-               header and pressing insert button below.</p>
+            <br>
         </div>
     </div>
 
