@@ -17,7 +17,8 @@ Route::controllers([
 ]);
 
 Route::controllers([
-    'insert' => 'Inserters\EmployeeInsertController'
+    'man_employee' => 'Inserters\EmployeeInsertController',
+    'man_artwork' => 'Inserters\ArtworkInsertController',
 ]);
 
 Route::get('/user/account', ['middleware' => "user", "uses" => "AccountController@show"]);

@@ -29,7 +29,7 @@ class EmployeeInsertController extends Controller {
                     FROM users INNER JOIN Zamestnanec
                         WHERE users.id = Zamestnanec.IDzamestnanca"))
             ->with("header", ["name", "email", "password", "birthno", "firstname", "lastname", "phone", "role"])
-            ->with("target", "/insert/send");
+            ->with("target", "/man_employee/send");
     }
 
     function postSend(Request $request)
@@ -47,6 +47,6 @@ class EmployeeInsertController extends Controller {
             "priezvisko" => $request->request->get("lastname"),
             "telefon" => $request->request->get("phone")
         ]);
-        return redirect("/insert/employee");
+        return redirect("/man_employee/employee");
     }
 };
