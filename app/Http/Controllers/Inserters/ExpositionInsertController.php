@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: onionka
+ * User: xcibul10
  * Date: 12/1/15
  * Time: 2:58 PM
  */
@@ -39,10 +39,10 @@ class ExpositionInsertController extends Controller {
         return view("user.exposition")
             ->with("table", DB::select($sql))
             ->with("header", ["from", "to", "name"])
-            ->with("target", "/man_exposition/send");
+            ->with("target", "/man_exposition/insert");
     }
 
-    function getSelect()
+    function getShow()
     {
         return view("user.selectexp");
     }
@@ -90,7 +90,35 @@ class ExpositionInsertController extends Controller {
             ->with("spots", $spots);
     }
 
-    function postSend(Request $request)
+    function getDelete()
+    {
+        return view("admin.delete")
+            ->with("table", DB::select(
+                "SELECT id, name, email, password, rc, meno, priezvisko, telefon, role
+                    FROM users INNER JOIN Zamestnanec
+                        WHERE users.id = Zamestnanec.IDzamestnanca"
+            ))->with(
+                "header", ["name", "email", "password", "birthno", "firstname", "lastname", "phone", "role"]
+            )->with("target", "/man_employee/delete");
+    }
+
+    function postDelete(Request $request)
+    {
+        foreach ($request->request->keys() as $key)
+            if ($request->request->get($key) == "delete")
+            {
+                DB::table("Expozicia")->where(["IDexpozicie" => $key])->delete();
+            }
+        return redirect("/man_exposition/delete");
+    }
+
+    function postUpdate(Request $request)
+    {
+        // TODO: implement
+        return redirect("/man_exposition/update/".$request->request->get("id"));
+    }
+
+    function postInsert(Request $request)
     {
         $validator = $this->validator($request->all());
 
@@ -111,7 +139,6 @@ class ExpositionInsertController extends Controller {
         ]);
 
         return redirect("/man_exposition/update/".$id);
-
     }
 };
 

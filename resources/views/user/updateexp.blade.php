@@ -18,6 +18,4 @@
 
         </div>
     </div>
-
-    @include ('handlers/error', ["errors" => $errors])
 @stop

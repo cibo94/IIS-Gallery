@@ -1,6 +1,8 @@
 <form class="form-horizontal" role="form" method="POST" action="{!! $target !!}">
     {!! csrf_field() !!}
 
+    @include ('handlers/error', ["errors" => $errors])
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -38,5 +40,4 @@
     </div>
 
     @include('layouts/table', ['table' => $table, 'header' => $header])
-
 </form>

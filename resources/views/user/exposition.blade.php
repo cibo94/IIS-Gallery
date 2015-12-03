@@ -17,6 +17,4 @@
         "header" => $header,
         "target" => $target
     ])
-
-    @include ('handlers/error', ["errors" => $errors])
 @stop

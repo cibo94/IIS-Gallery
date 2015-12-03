@@ -12,7 +12,7 @@
 
                             <div class="form-group label-floating">
                                 <div class="col-md-8 col-md-offset-2">
-                                    <label for="i5" class="control-label">name</label>
+                                    <label for="i5" class="control-label">user name</label>
                                     <input type="text" class="form-control" name="name" value="{!! old("name") !!}">
                                 </div>
                             </div>
