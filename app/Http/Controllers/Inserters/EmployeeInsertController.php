@@ -102,8 +102,10 @@ class EmployeeInsertController extends Controller
 
     function postInsert(Request $request)
     {
+        $request->request->add(["name" => $request->request->get("username")]);
+        $request->request->remove("username");
         $user_tags = [
-            'name' => $request->request->get("username"),
+            'name' => $request->request->get("name"),
             'email' => $request->request->get("email"),
             'password' => bcrypt($request->request->get("password"))
         ];
