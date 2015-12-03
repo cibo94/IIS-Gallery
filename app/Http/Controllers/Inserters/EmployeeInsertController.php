@@ -88,7 +88,7 @@ class EmployeeInsertController extends Controller
         return redirect("/man_employee/update");
     }
 
-    function getInsert()
+    function getCreate()
     {
         return view("actions.insert")
             ->with("table", DB::select(
@@ -97,10 +97,10 @@ class EmployeeInsertController extends Controller
                         WHERE users.id = Zamestnanec.IDzamestnanca"
             ))->with(
                 "header", ["username", "email", "password", "birthno", "firstname", "lastname", "phone", "role"]
-            )->with("target", "/man_employee/insert");
+            )->with("target", "/man_employee/create");
     }
 
-    function postInsert(Request $request)
+    function postCreate(Request $request)
     {
         $request->request->add(["name" => $request->request->get("username")]);
         $request->request->remove("username");
@@ -129,7 +129,7 @@ class EmployeeInsertController extends Controller
 
         DB::table("users")->where(["id" => $user->id])->update(["role" => $request->request->get("role")]);
         DB::table("Zamestnanec")->insert($zam_tags);
-        return redirect("/man_employee/insert");
+        return redirect("/man_employee/create");
     }
 
     function getDelete()

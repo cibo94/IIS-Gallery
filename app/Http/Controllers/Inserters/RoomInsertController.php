@@ -51,17 +51,17 @@ class RoomInsertController extends Controller {
         return redirect("/man_room/delete");
     }
 
-    function getRoom()
+    function getCreate()
     {
         $sql = "SELECT IDmiestnosti id, plocha
                     FROM Miestnost";
         return view("actions.insert")
             ->with("table", DB::select($sql))
             ->with("header", ["identificator", "area"])
-            ->with("target", "/man_room/send");
+            ->with("target", "/man_room/create");
     }
 
-    function postSend(Request $request)
+    function postCreate(Request $request)
     {
         $validator = $this->validator($request->all());
 
@@ -76,6 +76,6 @@ class RoomInsertController extends Controller {
             "plocha" => $request->request->get("area"),
         ]);
 
-        return redirect("/man_room/room");
+        return redirect("/man_room/create");
     }
 };
