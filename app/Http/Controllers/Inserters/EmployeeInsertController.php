@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 use App\User;
 
 
-class EmployeeInsertController extends Controller {
+class EmployeeInsertController extends Controller
+{
 
     function __construct()
     {
@@ -36,6 +37,38 @@ class EmployeeInsertController extends Controller {
         ]);
     }
 
+    function getUpdate()
+    {
+        return view("admin.update")
+            ->with("table", DB::select(
+                "SELECT id, name, email, password, rc, meno, priezvisko, telefon, role
+                    FROM users INNER JOIN Zamestnanec
+                        WHERE users.id = Zamestnanec.IDzamestnanca"
+            ))->with(
+                "header", ["name", "email", "password", "birthno", "firstname", "lastname", "phone", "role"]
+            )->with("target", "/man_employee/update");
+    }
+
+    function postUpdate(Request $request)
+    {
+        foreach ($request->request->all() as $key => $value) {
+            if ($value == "")
+                continue;
+            $split = explode('-', $key);
+            if (count($split) == 2)
+                if (in_array($split[1], ["id", "name", "email", "role"])) {
+                    DB::table("users")
+                        ->where(["id" => $split[0]])
+                        ->update([$split[1] => $value]);
+                } elseif (in_array($split[1], ["rc", "meno", "priezvisko", "telefon"])) {
+                    DB::table("Zamestnanec")
+                        ->where(["IDzamestnanca" => $split[0]])
+                        ->update([$split[1] => $value]);
+                }
+        }
+        return redirect("/man_employee/update");
+    }
+
     function getInsert()
     {
         return view("admin.insert")
@@ -44,7 +77,7 @@ class EmployeeInsertController extends Controller {
                     FROM users INNER JOIN Zamestnanec
                         WHERE users.id = Zamestnanec.IDzamestnanca"
             ))->with(
-                "header", ["name", "email", "password", "birthno", "firstname", "lastname", "phone", "role"]
+                "header", ["username", "email", "password", "birthno", "firstname", "lastname", "phone", "role"]
             )->with("target", "/man_employee/insert");
     }
 
@@ -93,10 +126,11 @@ class EmployeeInsertController extends Controller {
     function postDelete(Request $request)
     {
         foreach ($request->request->keys() as $key)
-            if ($request->request->get($key) == "delete")
-            {
+            if ($request->request->get($key) == "delete") {
                 DB::table("users")->where(["id" => $key])->delete();
             }
         return redirect('/man_employee/delete');
     }
-};
+}
+
+;

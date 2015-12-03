@@ -46,6 +46,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/man_employee/insert">insert</a></li>
                                 <li><a href="/man_employee/delete">delete</a></li>
+                                <li><a href="/man_employee/update">update</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -55,6 +56,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/man_room/room">insert</a></li>
+                                <li><a href="/man_room/delete">delete</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -64,6 +66,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/man_spot/spot">insert</a></li>
+                                <li><a href="/man_spot/delete">delete</a></li>
                             </ul>
                         </li>
                     @elseif (Auth::user()->role == "user")

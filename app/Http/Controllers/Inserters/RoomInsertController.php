@@ -30,11 +30,32 @@ class RoomInsertController extends Controller {
         ]);
     }
 
+    function getDelete()
+    {
+        return view("admin.delete")
+            ->with("table", DB::select(
+                "SELECT IDmiestnosti id, IDmiestnosti 'area id', plocha area
+                     FROM Miestnost"
+            ))->with(
+                "header", ["area id", "area"]
+            )->with("target", "/man_room/delete");
+    }
+
+    function postDelete(Request $request)
+    {
+        foreach ($request->request->keys() as $key)
+            if ($request->request->get($key) == "delete")
+            {
+                DB::table("Miestnost")->where(["IDmiestnosti" => $key])->delete();
+            }
+        return redirect("/man_room/delete");
+    }
+
     function getRoom()
     {
         $sql = "SELECT IDmiestnosti id, plocha
                     FROM Miestnost";
-        return view("admin.room")
+        return view("admin.insert")
             ->with("table", DB::select($sql))
             ->with("header", ["identificator", "area"])
             ->with("target", "/man_room/send");

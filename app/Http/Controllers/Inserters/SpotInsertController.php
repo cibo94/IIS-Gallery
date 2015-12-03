@@ -38,10 +38,8 @@ class SpotInsertController extends Controller {
         $sql = "SELECT typ, velkost, cena, IDmiestnosti, IDzamestnanca
                 FROM ExpozicneMiesto";
         $rooms = "SELECT IDmiestnosti id FROM Miestnost";
-
         $employees = "SELECT IDzamestnanca id, meno name, priezvisko surname FROM Zamestnanec";
-
-        return view("admin.spot")
+        return view("admin.insert")
             ->with("table", DB::select($sql))
             ->with("rooms", DB::select($rooms))
             ->with("employees", DB::select($employees))
