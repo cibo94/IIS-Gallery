@@ -37,7 +37,11 @@
                 <li><a href="/about">about</a></li>
                 @if (\Illuminate\Support\Facades\Auth::check())
                     @if (Auth::user()->role == "admin")
-                        <li><a href="/insert/employee">manage employees</a></li>
+                        <li><a href="/man_employee/employee">manage employees</a></li>
+                    @elseif (Auth::user()->role == "user")
+                        <li><a href="/man_artwork/artwork">manage artwork</a></li>
+                        <li><a href="/man_exposition/create">create expositions</a></li>
+                        <li><a href="/man_exposition/select">update expositions</a></li>
                     @endif
                 @endif
             </ul>
