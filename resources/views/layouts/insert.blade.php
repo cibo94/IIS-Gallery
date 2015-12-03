@@ -21,22 +21,27 @@
                                         <input type="email" class="form-control" name="{!! $head !!}"
                                                value="{!! old($head) !!}">
                                     @elseif ($head == "room")
-                                        <label for="i5" class="control-label">{!! $head !!}</label>
                                         <select name={!! $head !!} class="form-control" id="room-select">
                                             @foreach($rooms as $room)
                                                 <option value="{!! $room->id !!}">{!! $room->id !!}</option>
                                             @endforeach
                                         </select>
+                                    @elseif ($head == "responsibility")
+                                        <select name={!! $head !!} class="form-control" id="employee-select">
+                                            @foreach($employees as $employee)
+                                                <option value="{!! $employee->id !!}">
+                                                    {!! $employee->name !!} {!! $employee->surname !!}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     @elseif ($head == "spot type")
-                                        <label for="i5" class="control-label">{!! $head !!}</label>
-                                        <select name={!! $head !!} class="form-control" id="spot-type-select">
+                                        <select name="spottype" class="form-control" id="spot-type-select">
                                             <option value="floor">floor</option>
                                             <option value="wall">wall</option>
                                             <option value="ceiling">ceiling</option>
                                         </select>
                                     @elseif ($head == "artwork type")
-                                        <label for="i5" class="control-label">{!! $head !!}</label>
-                                        <select name={!! $head !!} class="form-control" id="artwork-type-select">
+                                        <select name="artworktype" class="form-control" id="artwork-type-select">
                                             <option value="charcoal drawing">charcoal drawing</option>
                                             <option value="chalk drawing">chalk drawing</option>
                                             <option value="pastel drawing">pastel drawing</option>
@@ -75,6 +80,5 @@
             </div>
         </div>
     </div>
-
     @include('layouts/table', ['table' => $table, 'header' => $header])
 </form>

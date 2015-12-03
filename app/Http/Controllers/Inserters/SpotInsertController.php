@@ -25,7 +25,7 @@ class SpotInsertController extends Controller {
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'spot type' => 'required|max: 20',
+            'spottype' => 'required|max: 20',
             'area' => 'required|numeric',
             'cost' => 'required|numeric',
             'room' => 'required|exists:Miestnost,IDmiestnosti',
@@ -38,9 +38,13 @@ class SpotInsertController extends Controller {
         $sql = "SELECT typ, velkost, cena, IDmiestnosti, IDzamestnanca
                 FROM ExpozicneMiesto";
         $rooms = "SELECT IDmiestnosti id FROM Miestnost";
+
+        $employees = "SELECT IDzamestnanca id, meno name, priezvisko surname FROM Zamestnanec";
+
         return view("admin.spot")
             ->with("table", DB::select($sql))
             ->with("rooms", DB::select($rooms))
+            ->with("employees", DB::select($employees))
             ->with("header", ["spot type", "area", "cost", "room", "responsibility"])
             ->with("target", "/man_spot/send");
     }
@@ -60,7 +64,7 @@ class SpotInsertController extends Controller {
             $responsible = null;
 
         DB::table("ExpozicneMiesto")->insert([
-            "typ" => $request->request->get("spot type"),
+            "typ" => $request->request->get("spottype"),
             "velkost" => $request->request->get("area"),
             "cena" => $request->request->get("cost"),
             "IDmiestnosti" => $request->request->get("room"),

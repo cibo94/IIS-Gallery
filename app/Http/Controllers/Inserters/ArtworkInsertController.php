@@ -26,17 +26,17 @@ class ArtworkInsertController extends Controller {
     {
         return Validator::make($data, [
             'artwork' => 'required|max:30',
-            'artwork type' => 'required|max:20',
+            'artworktype' => 'required|max:20',
             'author' => 'max:40',
         ]);
     }
 
-    function getArtwork()
+    function getCreate()
     {
         $sql = "SELECT nazov, autor, typ
                     FROM Dielo
                         WHERE Dielo.IDusera = '". \Auth::user()->id ."'";
-        return view("user.artwork")
+        return view("user.create")
             ->with("table", DB::select($sql))
             ->with("header", ["artwork", "author", "artwork type"])
             ->with("target", "/man_artwork/send");
@@ -55,9 +55,9 @@ class ArtworkInsertController extends Controller {
         DB::table("Dielo")->insert([
             "nazov" => $request->request->get("artwork"),
             "autor" => $request->request->get("author"),
-            "typ" => $request->request->get("artwork type"),
+            "typ" => $request->request->get("artworktype"),
             "IDusera" => \Auth::user()->id
         ]);
-        return redirect("/man_artwork/artwork");
+        return redirect("/man_artwork/create");
     }
 };
