@@ -53,7 +53,7 @@ class SpotInsertController extends Controller {
         return redirect('/man_spot/delete');
     }
 
-    function getSpot()
+    function getCreate()
     {
         $sql = "SELECT typ, velkost, cena, IDmiestnosti, IDzamestnanca
                 FROM ExpozicneMiesto";
@@ -64,10 +64,10 @@ class SpotInsertController extends Controller {
             ->with("rooms", DB::select($rooms))
             ->with("employees", DB::select($employees))
             ->with("header", ["spot type", "area", "cost", "room", "responsibility"])
-            ->with("target", "/man_spot/send");
+            ->with("target", "/man_spot/create");
     }
 
-    function postSend(Request $request)
+    function postCreate(Request $request)
     {
         $validator = $this->validator($request->all());
 
@@ -82,13 +82,13 @@ class SpotInsertController extends Controller {
             $responsible = null;
 
         DB::table("ExpozicneMiesto")->insert([
-            "typ" => $request->request->get("spottype"),
+            "typ" => $request->request->get("spot type"),
             "velkost" => $request->request->get("area"),
             "cena" => $request->request->get("cost"),
             "IDmiestnosti" => $request->request->get("room"),
             "IDzamestnanca" => $responsible,
         ]);
 
-        return redirect("/man_spot/spot");
+        return redirect("/man_spot/create");
     }
 };

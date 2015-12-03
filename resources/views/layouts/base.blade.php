@@ -46,20 +46,11 @@
                                 manage rooms<b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/man_room/room">insert</a></li>
+                                <li><a href="/man_room/create">create</a></li>
                                 <li><a href="/man_room/delete">delete</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
-                               data-toggle="dropdown">
-                                manage spots<b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/man_spot/spot">insert</a></li>
-                                <li><a href="/man_spot/delete">delete</a></li>
-                            </ul>
-                        </li>
+
                     @endif
 
                     <!-- Employee management for admin only -->
@@ -70,9 +61,30 @@
                                 manage employees<b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/man_employee/insert">insert</a></li>
+                                <li><a href="/man_employee/create">create</a></li>
                                 <li><a href="/man_employee/delete">delete</a></li>
                                 <li><a href="/man_employee/update">update</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
+                               data-toggle="dropdown">
+                                manage spots<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/man_spot/create">create</a></li>
+                                <li><a href="/man_spot/delete">delete</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
+                               data-toggle="dropdown">
+                                manage equipment<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/man_equipment/create">create</a></li>
+                                <li><a href="/man_equipment/update">update</a></li>
+                                <li><a href="/man_equipment/delete">delete</a></li>
                             </ul>
                         </li>
                     @endif
@@ -85,8 +97,8 @@
                                 artwork<b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/man_artwork/show">update</a></li>
                                 <li><a href="/man_artwork/create">create</a></li>
+                                <li><a href="/man_artwork/show">update</a></li>
                                 <li><a href="/man_artwork/delete">delete</a></li>
                             </ul>
                         </li>
@@ -96,8 +108,8 @@
                                 expositions<b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/man_exposition/show">update</a></li>
                                 <li><a href="/man_exposition/create">create</a></li>
+                                <li><a href="/man_exposition/show">update</a></li>
                                 <li><a href="/man_exposition/delete">delete</a></li>
                             </ul>
                         </li>
