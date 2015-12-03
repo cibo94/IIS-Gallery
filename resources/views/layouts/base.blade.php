@@ -46,6 +46,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/man_room/create">create</a></li>
+                                <li><a href="/man_room/update">update</a></li>
                                 <li><a href="/man_room/delete">delete</a></li>
                             </ul>
                         </li>
