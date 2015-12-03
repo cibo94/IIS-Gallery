@@ -22,7 +22,7 @@ class AccountController extends Controller
                             ON zahr.expozicia = ex.IDexpozicie
                         INNER JOIN Dielo as d
                             ON d.IDdiela = dielo
-                    WHERE za.id = '". \Auth::user()->fkid ."'
+                    WHERE za.id = '". \Auth::user()->id ."'
                 ORDER BY odCas";
         return view("user/account")->with([
             "table" => DB::select($sql),

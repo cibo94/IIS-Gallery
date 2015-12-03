@@ -117,12 +117,11 @@ class ExpositionInsertController extends Controller {
     {
         return view("actions.delete")
             ->with("table", DB::select(
-                "SELECT id, name, email, password, rc, meno, priezvisko, telefon, role
-                    FROM users INNER JOIN Zamestnanec
-                        WHERE users.id = Zamestnanec.IDzamestnanca"
+                "SELECT IDexpozicie id, nazov, odCas, doCas
+                    FROM Expozicia WHERE IDusera = " . \Auth::user()->id
             ))->with(
-                "header", ["name", "email", "password", "birthno", "firstname", "lastname", "phone", "role"]
-            )->with("target", "/man_employee/delete");
+                "header", ["exposition", "from", "until"]
+            )->with("target", "/man_exposition/delete");
     }
 
     function postDelete(Request $request)

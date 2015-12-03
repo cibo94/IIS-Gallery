@@ -98,7 +98,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/man_artwork/create">create</a></li>
-                                <li><a href="/man_artwork/show">update</a></li>
+                                <li><a href="/man_artwork/update">update</a></li>
                                 <li><a href="/man_artwork/delete">delete</a></li>
                             </ul>
                         </li>
