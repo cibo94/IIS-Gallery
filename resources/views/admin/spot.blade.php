@@ -4,7 +4,7 @@
 
     <div class="row">
         <div class="col-xs-12" style="text-align: center">
-            <h1>Room management</h1>
+            <h1>Exposition spot management</h1>
             <br>
         </div>
     </div>

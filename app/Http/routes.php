@@ -18,6 +18,7 @@ Route::controllers([
     'man_artwork' => 'Inserters\ArtworkInsertController',
     'man_exposition' => 'Inserters\ExpositionInsertController',
     'man_room' => 'Inserters\RoomInsertController',
+    'man_spot' => 'Inserters\SpotInsertController',
 ]);
 
 Route::get('/user/account', ['middleware' => "user", "uses" => "AccountController@show"]);

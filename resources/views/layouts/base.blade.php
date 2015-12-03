@@ -57,6 +57,15 @@
                                 <li><a href="/man_room/room">insert</a></li>
                             </ul>
                         </li>
+                        <li class="dropdown">
+                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
+                               data-toggle="dropdown">
+                                manage spots<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/man_spot/spot">insert</a></li>
+                            </ul>
+                        </li>
                     @elseif (Auth::user()->role == "user")
                         <li class="dropdown">
                             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
