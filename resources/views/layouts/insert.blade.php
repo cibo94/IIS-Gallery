@@ -61,6 +61,14 @@
                                             <option value="photography">photography</option>
                                             <option value="other">other</option>
                                         </select>
+                                    @elseif ($head == "exposition")
+                                        <select name={!! $head !!} class="form-control" id="exposition-select">
+                                            @foreach($expositions as $exposition)
+                                                <option value="{!! $exposition->id !!}">
+                                                    {!! $exposition->nazov !!}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     @else
                                         <input type="text" class="form-control" name="{!! $head !!}"
                                                value="{!! old($head) !!}">
