@@ -78,4 +78,37 @@ class RoomInsertController extends Controller {
 
         return redirect("/man_room/create");
     }
+
+    function getUpdate()
+    {
+        return view("actions.update")
+            ->with("table", DB::select(
+                "SELECT IDmiestnosti id, IDmiestnosti, plocha FROM Miestnost"
+            ))->with(
+                "header", ["id", "area"]
+            )->with("target", "/man_room/update");
+    }
+
+    function postUpdate(Request $request)
+    {
+        foreach ($request->request->all() as $key => $value) {
+            if ($value == "")
+                continue;
+            $split = explode('-', $key);
+            if (count($split) == 2) {
+                $validator = Validator::make([$split[1] => $value], [
+                    'plocha' => 'numeric',
+                    'IDmiestnosti' => 'alpha_num|unique:Miestnost,IDmiestnosti'
+                ]);
+
+                if ($validator->fails())
+                    $this->throwValidationException($request, $validator);
+
+                DB::table("Miestnost")
+                    ->where(["IDmiestnosti" => $split[0]])
+                    ->update([$split[1] => $value]);
+            }
+        }
+        return redirect("/man_room/update");
+    }
 };
