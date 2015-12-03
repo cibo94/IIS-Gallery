@@ -115,7 +115,7 @@ class ExpositionInsertController extends Controller {
 
     function getDelete()
     {
-        return view("admin.delete")
+        return view("actions.delete")
             ->with("table", DB::select(
                 "SELECT id, name, email, password, rc, meno, priezvisko, telefon, role
                     FROM users INNER JOIN Zamestnanec

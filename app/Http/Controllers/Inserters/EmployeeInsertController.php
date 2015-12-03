@@ -39,7 +39,7 @@ class EmployeeInsertController extends Controller
 
     function getUpdate()
     {
-        return view("admin.update")
+        return view("actions.update")
             ->with("table", DB::select(
                 "SELECT id, name, email, password, rc, meno, priezvisko, telefon, role
                     FROM users INNER JOIN Zamestnanec
@@ -55,8 +55,26 @@ class EmployeeInsertController extends Controller
             if ($value == "")
                 continue;
             $split = explode('-', $key);
-            if (count($split) == 2)
-                if (in_array($split[1], ["id", "name", "email", "role"])) {
+            if (count($split) == 2) {
+                $validator = Validator::make([$split[1] => $value], [
+                    'name' => 'max:255',
+                    'password' => 'min:6|max:60',
+                    'email' => 'email|unique:users,email|max:255',
+                    'rc' => 'unique:Zamestnanec,rc|max:10',
+                    'meno' => 'max:20',
+                    'priezvisko' => 'max:20',
+                    'telefon' => 'max:16',
+                    'role' => 'in:employee,admin'
+                ]);
+
+                if ($validator->fails())
+                    $this->throwValidationException($request, $validator);
+
+                if ($split[1] == "password") {
+                    DB::table("users")
+                        ->where(["id" => $split[0]])
+                        ->update([$split[1] => bcrypt($value)]);
+                } elseif (in_array($split[1], ["id", "name", "email", "role"])) {
                     DB::table("users")
                         ->where(["id" => $split[0]])
                         ->update([$split[1] => $value]);
@@ -65,13 +83,14 @@ class EmployeeInsertController extends Controller
                         ->where(["IDzamestnanca" => $split[0]])
                         ->update([$split[1] => $value]);
                 }
+            }
         }
         return redirect("/man_employee/update");
     }
 
     function getInsert()
     {
-        return view("admin.insert")
+        return view("actions.insert")
             ->with("table", DB::select(
                 "SELECT name, email, password, rc, meno, priezvisko, telefon, role
                     FROM users INNER JOIN Zamestnanec
@@ -113,7 +132,7 @@ class EmployeeInsertController extends Controller
 
     function getDelete()
     {
-        return view("admin.delete")
+        return view("actions.delete")
             ->with("table", DB::select(
                 "SELECT id, name username, email, password, rc, meno, priezvisko, telefon, role
                     FROM users INNER JOIN Zamestnanec

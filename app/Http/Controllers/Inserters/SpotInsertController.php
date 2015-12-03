@@ -19,7 +19,7 @@ class SpotInsertController extends Controller {
 
     function __construct()
     {
-        $this->middleware("admin");
+        $this->middleware("employee");
     }
 
     protected function validator(array $data)
@@ -33,13 +33,33 @@ class SpotInsertController extends Controller {
         ]);
     }
 
+    function getDelete()
+    {
+        return view("actions.delete")
+            ->with("table", DB::select(
+                "SELECT IDmiesta id, typ, velkost, cena, IDmiestnosti
+                   FROM ExpozicneMiesto WHERE IDzamestnanca = " . \Auth::user()->id
+            ))->with(
+                "header", ["type", "size", "price", "room id"]
+            )->with("target", "/man_spot/delete");
+    }
+
+    function postDelete(Request $request)
+    {
+        foreach ($request->request->keys() as $key)
+            if ($request->request->get($key) == "delete") {
+                DB::table("ExpozicneMiesto")->where(["IDmiesta" => $key])->delete();
+            }
+        return redirect('/man_spot/delete');
+    }
+
     function getSpot()
     {
         $sql = "SELECT typ, velkost, cena, IDmiestnosti, IDzamestnanca
                 FROM ExpozicneMiesto";
         $rooms = "SELECT IDmiestnosti id FROM Miestnost";
         $employees = "SELECT IDzamestnanca id, meno name, priezvisko surname FROM Zamestnanec";
-        return view("admin.insert")
+        return view("actions.insert")
             ->with("table", DB::select($sql))
             ->with("rooms", DB::select($rooms))
             ->with("employees", DB::select($employees))

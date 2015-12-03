@@ -37,18 +37,9 @@
                 <li><a href="/exhibition">exhibition</a></li>
                 <li><a href="/about">about</a></li>
                 @if (\Illuminate\Support\Facades\Auth::check())
-                    @if (Auth::user()->role == "admin")
-                        <li class="dropdown">
-                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
-                               data-toggle="dropdown">
-                                manage employees<b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/man_employee/insert">insert</a></li>
-                                <li><a href="/man_employee/delete">delete</a></li>
-                                <li><a href="/man_employee/update">update</a></li>
-                            </ul>
-                        </li>
+
+                    <!-- Room and Spots managing for employee and admin -->
+                    @if (\Auth::user()->role == "employee" or \Auth::user()->role == "admin")
                         <li class="dropdown">
                             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
                                data-toggle="dropdown">
@@ -69,7 +60,25 @@
                                 <li><a href="/man_spot/delete">delete</a></li>
                             </ul>
                         </li>
-                    @elseif (Auth::user()->role == "user")
+                    @endif
+
+                    <!-- Employee management for admin only -->
+                    @if (\Auth::user()->role == "admin")
+                        <li class="dropdown">
+                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
+                               data-toggle="dropdown">
+                                manage employees<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/man_employee/insert">insert</a></li>
+                                <li><a href="/man_employee/delete">delete</a></li>
+                                <li><a href="/man_employee/update">update</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    <!-- User only functions -->
+                    @if (Auth::user()->role == "user")
                         <li class="dropdown">
                             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
                                data-toggle="dropdown">

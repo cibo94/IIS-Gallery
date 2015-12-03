@@ -19,7 +19,7 @@ class RoomInsertController extends Controller {
 
     function __construct()
     {
-        $this->middleware("admin");
+        $this->middleware("employee");
     }
 
     protected function validator(array $data)
@@ -32,7 +32,7 @@ class RoomInsertController extends Controller {
 
     function getDelete()
     {
-        return view("admin.delete")
+        return view("actions.delete")
             ->with("table", DB::select(
                 "SELECT IDmiestnosti id, IDmiestnosti 'area id', plocha area
                      FROM Miestnost"
@@ -55,7 +55,7 @@ class RoomInsertController extends Controller {
     {
         $sql = "SELECT IDmiestnosti id, plocha
                     FROM Miestnost";
-        return view("admin.insert")
+        return view("actions.insert")
             ->with("table", DB::select($sql))
             ->with("header", ["identificator", "area"])
             ->with("target", "/man_room/send");
