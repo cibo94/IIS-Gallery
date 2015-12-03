@@ -157,7 +157,7 @@
     $(document).ready(function () {
         $(".select").dropdown({"optionClass": "withripple"});
     });
-    $().dropdown({autoinit: "select"});
+    $(".select").dropdown({autoinit: ".select"});
     $('.data-table').DataTable({
         ordering: true,
         searching: false,

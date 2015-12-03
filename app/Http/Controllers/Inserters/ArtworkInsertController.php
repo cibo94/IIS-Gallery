@@ -31,6 +31,44 @@ class ArtworkInsertController extends Controller {
         ]);
     }
 
+
+    function getUpdate()
+    {
+        return view("actions.update")
+            ->with("table", DB::select(
+                "SELECT IDdiela id, nazov, autor, typ
+                    FROM Dielo WHERE Dielo.IDusera =" . \Auth::user()->id
+            ))->with(
+                "header", ["artwork", "author", "type"]
+            )->with("target", "/man_artwork/update");
+    }
+
+    function postUpdate(Request $request)
+    {
+        foreach ($request->request->all() as $key => $value) {
+            if ($value == "")
+                continue;
+            $split = explode('-', $key);
+            if (count($split) == 2) {
+                $validator = Validator::make([$split[1] => $value], [
+                    'nazov' => 'max:30',
+                    'typ' => 'max:20',
+                    'autor' => 'max:40',
+                ]);
+
+                if ($validator->fails())
+                    $this->throwValidationException($request, $validator);
+
+                if (in_array($split[1], ["nazov", "autor", "typ"])) {
+                    DB::table("Dielo")
+                        ->where(["IDdiela" => $split[0]])
+                        ->update([$split[1] => $value]);
+                }
+            }
+        }
+        return redirect("/man_artwork/update");
+    }
+
     function getCreate()
     {
         $sql = "SELECT nazov, autor, typ
@@ -40,6 +78,26 @@ class ArtworkInsertController extends Controller {
             ->with("table", DB::select($sql))
             ->with("header", ["artwork", "author", "artwork type"])
             ->with("target", "/man_artwork/send");
+    }
+
+    function getDelete()
+    {
+        return view("actions.delete")
+            ->with("table", DB::select(
+                "SELECT IDdiela id, nazov, autor, typ
+                    FROM Dielo WHERE Dielo.IDusera =" . \Auth::user()->id
+            ))->with(
+                "header", ["nazov", "autor", "typ"]
+            )->with("target", "/man_artwork/delete");
+    }
+
+    function postDelete(Request $request)
+    {
+        foreach ($request->request->keys() as $key)
+            if ($request->request->get($key) == "delete") {
+                DB::table("Dielo")->where(["IDdiela" => $key])->delete();
+            }
+        return redirect('/man_artwork/delete');
     }
 
     function postSend(Request $request)
