@@ -44,50 +44,73 @@ class ExpositionInsertController extends Controller {
 
     function getShow()
     {
-        return view("user.selectexp");
+        $expositions = DB::select("SELECT IDexpozicie 'id', nazov 'name'
+                                  FROM Expozicia
+                                  WHERE IDusera = '". \Auth::user()->id ."'");
+        $table = DB::select("SELECT nazov, odCas, doCas
+                                  FROM Expozicia
+                                  WHERE IDusera = '". \Auth::user()->id ."'");
+        return view("user.selectexp")
+            ->with("expositions", $expositions)
+            ->with("table", $table)
+            ->with("header", ["exposition", "from", "until"])
+            ->with("target", "/man_exposition/show");;
     }
+
 
     function getUpdate($id)
     {
-        $exposition = DB::select("SELECT odCas, doCas, nazov
+        $exposition = DB::select("SELECT IDexpozicie id, odCas, doCas, nazov
                                   FROM Expozicia
                                   WHERE IDexpozicie = '". $id ."'
                                         AND IDusera = '". \Auth::user()->id ."'");
-        if($exposition == null)
-            return view("user.selectexp");
+        if($exposition == null) {
+            return redirect("/man_exposition/show");
+        }
 
-        $spots = DB::select("SELECT M1.IDmiesta, M1.typ, M1.velkost, M1.cena
-                             FROM ExpozicneMiesto M1
+
+        $spots = DB::select("SELECT M.IDmiesta 'id', M.typ 'type', M.velkost 'size', M.cena 'cost'
+                             FROM ExpozicneMiesto M
                              WHERE NOT EXISTS (
-                                SELECT M2.IDmiesta
-                                FROM ExpozicneMiesto M2
-                                INNER JOIN Zahrnuje Za ON Za.expozicneMiesto = M2.IDmiesta
-                                INNER JOIN Expozicia Ex WHERE M2.IDmiesta = M1.IDmiesta AND
-                                                              (Ex.odCas < '" . $exposition[0]->odCas . "'
-                                                              AND Ex.doCas >= '" . $exposition[0]->odCas . "')
-                                                              OR
-                                                              (Ex.odCas <= '" . $exposition[0]->doCas . "'
-                                                              AND Ex.doCas > '" . $exposition[0]->doCas . "')
-                  )");
+                                SELECT Z.expozicneMiesto
+                                FROM Zahrnuje Z
+                                INNER JOIN Expozicia E
+                                WHERE M.IDmiesta = Z.expozicneMiesto AND
+                                      Z.expozicia = E.IDexpozicie AND
+                                      (
+                                            (E.odCas <= '" . $exposition[0]->odCas . "' AND
+                                            E.doCas >= '" . $exposition[0]->odCas . "')
+                                          OR
+                                            (E.odCas <= '" . $exposition[0]->doCas . "' AND
+                                            E.doCas >= '" . $exposition[0]->doCas . "')
+                                      ))");
 
-        $artworks = DB::select("SELECT D1.IDdiela, D1.nazov, D1.autor, D1.typ
-                                FROM Dielo D1
+        $artworks = DB::select("SELECT D.IDdiela 'id', D.nazov 'name', D.autor 'author', D.typ 'type'
+                                FROM Dielo D
                                 WHERE NOT EXISTS (
-                                    SELECT D2.IDdiela
-                                    FROM Dielo D2
-                                    INNER JOIN Zahrnuje Za ON Za.dielo = D2.IDdiela
-                                    INNER JOIN Expozicia Ex WHERE D2.IDdiela = D1.IDdiela AND
-                                                                  (Ex.odCas < '" . $exposition[0]->odCas . "'
-                                                                  AND Ex.doCas >= '" . $exposition[0]->odCas . "')
-                                                                  OR
-                                                                  (Ex.odCas <= '" . $exposition[0]->doCas . "'
-                                                                  AND Ex.doCas > '" . $exposition[0]->doCas . "')
-                  )");
+                                    SELECT Z.dielo
+                                    FROM Zahrnuje Z
+                                    INNER JOIN Expozicia E
+                                        WHERE Z.expozicia = E.IDexpozicie AND Z.dielo = D.IDdiela
+                                          AND
+                                            ((E.odCas <= '" . $exposition[0]->odCas . "'
+                                                AND E.doCas >= '" . $exposition[0]->odCas . "')
+                                              OR
+                                            (E.odCas <= '" . $exposition[0]->doCas . "'
+                                                AND E.doCas >= '" . $exposition[0]->doCas . "')))");
+
+        $table = DB::select("SELECT D.nazov, D.autor, EM.cena
+                             FROM Dielo D
+                             INNER JOIN Zahrnuje Za ON Za.dielo = D.IDdiela AND Za.expozicia = '". $id ."'
+                             INNER JOIN ExpozicneMiesto EM ON EM.IDmiesta = Za.expozicneMiesto");
 
         return view("user.updateexp")
             ->with("exposition", $exposition)
             ->with("artworks", $artworks)
-            ->with("spots", $spots);
+            ->with("spots", $spots)
+            ->with("table", $table)
+            ->with("header", ["name", "author", "cost"])
+            ->with("target", "/man_exposition/update/".$id);
     }
 
     function getDelete()
@@ -114,7 +137,13 @@ class ExpositionInsertController extends Controller {
 
     function postUpdate(Request $request)
     {
-        // TODO: implement
+
+        DB::table("Zahrnuje")->insert([
+            "expozicia" => $request->request->get("id"),
+            "expozicneMiesto" => $request->request->get("spot"),
+            "dielo" => $request->request->get("artwork"),
+        ]);
+
         return redirect("/man_exposition/update/".$request->request->get("id"));
     }
 
@@ -139,6 +168,11 @@ class ExpositionInsertController extends Controller {
         ]);
 
         return redirect("/man_exposition/update/".$id);
+    }
+
+    function postShow(Request $request)
+    {
+        return redirect("/man_exposition/update/".$request->request->get("id"));
     }
 };
 
