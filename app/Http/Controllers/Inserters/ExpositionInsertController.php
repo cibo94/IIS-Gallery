@@ -30,7 +30,7 @@ class ExpositionInsertController extends Controller {
         ]);
     }
 
-    function getExposition()
+    function getCreate()
     {
         $sql= "SELECT odCas, doCas do, nazov
                     FROM Expozicia
@@ -40,6 +40,54 @@ class ExpositionInsertController extends Controller {
             ->with("table", DB::select($sql))
             ->with("header", ["from", "to", "name"])
             ->with("target", "/man_exposition/send");
+    }
+
+    function getSelect()
+    {
+        return view("user.selectexp");
+    }
+
+    function getUpdate($id)
+    {
+        $exposition = DB::select("SELECT odCas, doCas, nazov
+                                  FROM Expozicia
+                                  WHERE IDexpozicie = '". $id ."'
+                                        AND IDusera = '". \Auth::user()->id ."'");
+        if($exposition == null)
+            return view("user.selectexp");
+
+        $spots = DB::select("SELECT M1.IDmiesta, M1.typ, M1.velkost, M1.cena
+                             FROM ExpozicneMiesto M1
+                             WHERE NOT EXISTS (
+                                SELECT M2.IDmiesta
+                                FROM ExpozicneMiesto M2
+                                INNER JOIN Zahrnuje Za ON Za.expozicneMiesto = M2.IDmiesta
+                                INNER JOIN Expozicia Ex WHERE M2.IDmiesta = M1.IDmiesta AND
+                                                              (Ex.odCas < '" . $exposition[0]->odCas . "'
+                                                              AND Ex.doCas >= '" . $exposition[0]->odCas . "')
+                                                              OR
+                                                              (Ex.odCas <= '" . $exposition[0]->doCas . "'
+                                                              AND Ex.doCas > '" . $exposition[0]->doCas . "')
+                  )");
+
+        $artworks = DB::select("SELECT D1.IDdiela, D1.nazov, D1.autor, D1.typ
+                                FROM Dielo D1
+                                WHERE NOT EXISTS (
+                                    SELECT D2.IDdiela
+                                    FROM Dielo D2
+                                    INNER JOIN Zahrnuje Za ON Za.dielo = D2.IDdiela
+                                    INNER JOIN Expozicia Ex WHERE D2.IDdiela = D1.IDdiela AND
+                                                                  (Ex.odCas < '" . $exposition[0]->odCas . "'
+                                                                  AND Ex.doCas >= '" . $exposition[0]->odCas . "')
+                                                                  OR
+                                                                  (Ex.odCas <= '" . $exposition[0]->doCas . "'
+                                                                  AND Ex.doCas > '" . $exposition[0]->doCas . "')
+                  )");
+
+        return view("user.updateexp")
+            ->with("exposition", $exposition)
+            ->with("artworks", $artworks)
+            ->with("spots", $spots);
     }
 
     function postSend(Request $request)
@@ -55,14 +103,14 @@ class ExpositionInsertController extends Controller {
         $fromTime = \DateTime::createFromFormat('d-m-Y',$request->request->get("from"));
         $toTime = \DateTime::createFromFormat('d-m-Y', $request->request->get("to"));
 
-        DB::table("Expozicia")->insert([
+        $id = DB::table("Expozicia")->insertGetId([
             "nazov" => $request->request->get("name"),
             "odCas" => $fromTime,
             "doCas" => $toTime,
             "IDusera" => \Auth::user()->id
         ]);
 
-        return redirect("/man_exposition/exposition");
+        return redirect("/man_exposition/update/".$id);
 
     }
 };
