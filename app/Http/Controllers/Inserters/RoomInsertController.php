@@ -19,7 +19,7 @@ class RoomInsertController extends Controller {
 
     function __construct()
     {
-        $this->middleware("employee");
+        $this->middleware("admin");
     }
 
     protected function validator(array $data)
