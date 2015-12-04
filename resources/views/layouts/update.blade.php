@@ -21,6 +21,9 @@
         @foreach($table as $row)
             <tr>
                 @foreach($row as $key => $item)
+                    @if ($item == "")
+                        <?php $item = "Not set" ?>
+                    @endif
                     @if ($key != "id")
                         <td>
                             <div class="form-group label-floating">
@@ -31,31 +34,69 @@
                                         </label>
                                         <input class="form-control" type="password"
                                                name="{!! $row->id !!}-{!! $key !!}"/>
-                                    @elseif ($key == "typ")
+                                    @elseif ($key == "arttype")
+                                        <label for="i5" class="control-label">
+                                            {!! $item !!}
+                                        </label>
+                                        <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select">
+                                            <?php $options = ["charcoal drawing", "chalk drawing", "pastel drawing",
+                                                              "pencil drawing", "pen and ink drawing", "caricature drawing",
+                                                              "encaustic painting", "tempera painting", "ink and wash painting",
+                                                              "oil painting", "watercolour painting", "acrylics painting",
+                                                              "bronze sculpture", "stone sculpture", "iron sculpture",
+                                                              "wood-carving", "photography", "other"] ?>
+                                            @foreach ($options as $option)
+                                                @if ($option == $item)
+                                                    <option value="{!! $option !!}" selected>{!! $option !!}</option>
+                                                @else
+                                                    <option value="{!! $option !!}">{!! $option !!}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @elseif ($key == "spottype")
+                                        <label for="i5" class="control-label">
+                                            {!! $item !!}
+                                        </label>
+                                        <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select" id="spotselect">
+                                            <?php $options = ["floor", "wall", "ceiling"] ?>
+                                            @foreach ($options as $option)
+                                                @if ($option == $item)
+                                                    <option value="{!! $option !!}" selected>{!! $option !!}</option>
+                                                @else
+                                                    <option value="{!! $option !!}">{!! $option !!}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @elseif ($key == "roomid")
                                         <label for="i5" class="control-label">
                                             {!! $item !!}
                                         </label>
                                         <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select"
                                                 selected="{!! $item !!}">
-                                            <option value=""></option>
-                                            <option value="charcoal drawing">charcoal drawing</option>
-                                            <option value="chalk drawing">chalk drawing</option>
-                                            <option value="pastel drawing">pastel drawing</option>
-                                            <option value="pencil drawing">pencil drawing</option>
-                                            <option value="pen and ink drawing">pen and ink drawing</option>
-                                            <option value="caricature drawing">caricature drawing</option>
-                                            <option value="encaustic painting">encaustic painting</option>
-                                            <option value="tempera painting">tempera painting</option>
-                                            <option value="ink and wash painting">ink and wash painting</option>
-                                            <option value="oil painting">oil painting</option>
-                                            <option value="watercolour painting">watercolour painting</option>
-                                            <option value="acrylics painting">acrylics painting</option>
-                                            <option value="bronze sculpture">bronze sculpture</option>
-                                            <option value="stone sculpture">stone sculpture</option>
-                                            <option value="iron sculpture">iron sculpture</option>
-                                            <option value="wood-carving">wood-carving</option>
-                                            <option value="photography">photography</option>
-                                            <option value="other">other</option>
+                                            @foreach($rooms as $room)
+                                                @if ($room->id == $item)
+                                                    <option value="{!! $room->id !!}" selected>{!! $room->id !!}</option>
+                                                @else
+                                                    <option value="{!! $room->id !!}">{!! $room->id !!}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @elseif ($key == "employeeid")
+                                        <label for="i5" class="control-label">
+                                            employee
+                                        </label>
+                                        <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select">
+                                            @foreach($employees as $employee)
+                                                @if ($employee->id == $item)
+                                                    <option value="{!! $employee->id !!}" selected>
+                                                        {!! $employee->name !!} {!! $employee->surname !!}
+                                                    </option>
+                                                @else
+                                                    <option value="{!! $employee->id !!}">
+                                                        {!! $employee->name !!} {!! $employee->surname !!}
+                                                    </option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     @else
                                         <label for="i5" class="control-label"

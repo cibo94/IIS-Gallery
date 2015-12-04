@@ -34,10 +34,10 @@ class RoomInsertController extends Controller {
     {
         return view("actions.delete")
             ->with("table", DB::select(
-                "SELECT IDmiestnosti id, IDmiestnosti 'area id', plocha area
+                "SELECT IDmiestnosti id, IDmiestnosti 'room id', plocha area
                      FROM Miestnost"
             ))->with(
-                "header", ["area id", "area"]
+                "header", ["room id", "area"]
             )->with("target", "/man_room/delete");
     }
 

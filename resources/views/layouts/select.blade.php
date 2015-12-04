@@ -37,4 +37,7 @@
         @endforeach
         </tbody>
     </table>
+    @if(isset($returnvalue))
+        <input type="hidden" class="form-control" name="returnvalue" value="{!! $returnvalue !!}">
+    @endif
 </form>

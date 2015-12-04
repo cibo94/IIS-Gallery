@@ -73,6 +73,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/man_spot/create">create</a></li>
+                                <li><a href="/man_spot/show">update</a></li>
                                 <li><a href="/man_spot/delete">delete</a></li>
                             </ul>
                         </li>
@@ -89,6 +90,10 @@
                         </li>
                     @endif
 
+                    <!-- User only functions -->
+                    @if (Auth::user()->role == "employee")
+                        <li><a href="/man_spot/show">manage exposition spots</a></li>
+                    @endif
                     <!-- User only functions -->
                     @if (Auth::user()->role == "user")
                         <li class="dropdown">

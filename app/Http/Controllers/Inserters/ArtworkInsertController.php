@@ -36,7 +36,7 @@ class ArtworkInsertController extends Controller {
     {
         return view("actions.update")
             ->with("table", DB::select(
-                "SELECT IDdiela id, nazov, autor, typ
+                "SELECT IDdiela id, nazov, autor, typ 'arttype'
                     FROM Dielo WHERE Dielo.IDusera =" . \Auth::user()->id
             ))->with(
                 "header", ["artwork", "author", "type"]
@@ -52,14 +52,16 @@ class ArtworkInsertController extends Controller {
             if (count($split) == 2) {
                 $validator = Validator::make([$split[1] => $value], [
                     'nazov' => 'max:30',
-                    'typ' => 'max:20',
+                    'arttype' => 'max:20',
                     'autor' => 'max:40',
                 ]);
 
                 if ($validator->fails())
                     $this->throwValidationException($request, $validator);
 
-                if (in_array($split[1], ["nazov", "autor", "typ"])) {
+                if (in_array($split[1], ["nazov", "autor", "arttype"])) {
+                    if($split[1] == "arttype")
+                        $split[1] = "typ";
                     DB::table("Dielo")
                         ->where(["IDdiela" => $split[0]])
                         ->update([$split[1] => $value]);
@@ -84,7 +86,7 @@ class ArtworkInsertController extends Controller {
     {
         return view("actions.delete")
             ->with("table", DB::select(
-                "SELECT IDdiela id, nazov, autor, typ
+                "SELECT IDdiela id, nazov, autor, typ arttype
                     FROM Dielo WHERE Dielo.IDusera =" . \Auth::user()->id
             ))->with(
                 "header", ["nazov", "autor", "typ"]

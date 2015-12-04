@@ -39,7 +39,7 @@ class ExpositionInsertController extends Controller {
         return view("user.exposition")
             ->with("table", DB::select($sql))
             ->with("header", ["from", "to", "name"])
-            ->with("target", "/man_exposition/insert");
+            ->with("target", "/man_exposition/create");
     }
 
     function getShow()
@@ -146,7 +146,7 @@ class ExpositionInsertController extends Controller {
         return redirect("/man_exposition/update/".$request->request->get("id"));
     }
 
-    function postInsert(Request $request)
+    function postCreate(Request $request)
     {
         $validator = $this->validator($request->all());
 
