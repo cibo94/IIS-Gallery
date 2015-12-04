@@ -14,6 +14,7 @@
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
+    'man_payment' => 'PaymentController',
     'man_employee' => 'Inserters\EmployeeInsertController',
     'man_artwork' => 'Inserters\ArtworkInsertController',
     'man_exposition' => 'Inserters\ExpositionInsertController',

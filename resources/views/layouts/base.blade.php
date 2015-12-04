@@ -34,27 +34,15 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/">home</a></li>
-                <li><a href="/exhibition">exhibition</a></li>
                 <li><a href="/about">about</a></li>
                 @if (\Illuminate\Support\Facades\Auth::check())
 
-                    <!-- Room and Spots managing for employee and admin -->
-                    @if (\Auth::user()->role == "employee" or \Auth::user()->role == "admin")
-                        <li class="dropdown">
-                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
-                               data-toggle="dropdown">
-                                manage rooms<b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/man_room/create">create</a></li>
-                                <li><a href="/man_room/update">update</a></li>
-                                <li><a href="/man_room/delete">delete</a></li>
-                            </ul>
-                        </li>
-
+                    <!-- user and admin -->
+                    @if (\Auth::user()->role == "user" or \Auth::user()->role == "admin")
+                        <li><a href="/man_payment/pay">payments</a></li>
                     @endif
 
-                    <!-- Employee management for admin only -->
+                    <!-- admin only -->
                     @if (\Auth::user()->role == "admin")
                         <li class="dropdown">
                             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
@@ -65,6 +53,17 @@
                                 <li><a href="/man_employee/create">create</a></li>
                                 <li><a href="/man_employee/delete">delete</a></li>
                                 <li><a href="/man_employee/update">update</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
+                               data-toggle="dropdown">
+                                manage rooms<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/man_room/create">create</a></li>
+                                <li><a href="/man_room/update">update</a></li>
+                                <li><a href="/man_room/delete">delete</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
