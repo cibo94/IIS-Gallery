@@ -4,11 +4,11 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <h1>Galéria</h1>
+            <h1>Gallery</h1>
 
-            <p>Najlepšia neexistujúca galéria na svete</p>
+            <p>Best unreal gallery in the world</p>
 
-            <h2>Práve vystavujeme</h2>
+            <h2>Current exhibitions</h2>
         </div>
     </div>
 

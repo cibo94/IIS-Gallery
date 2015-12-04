@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laravel is awesome</title>
+    <title>Gallery</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +34,6 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/">home</a></li>
-                <li><a href="/exhibition">exhibition</a></li>
                 <li><a href="/about">about</a></li>
                 @if (\Illuminate\Support\Facades\Auth::check())
 
