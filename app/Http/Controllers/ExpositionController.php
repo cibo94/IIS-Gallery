@@ -6,7 +6,7 @@
  * Time: 2:58 PM
  */
 
-namespace App\Http\Controllers\Inserters;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Validator;
 
-class ExpositionInsertController extends Controller {
+class ExpositionController extends Controller {
 
     function __construct()
     {

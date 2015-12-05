@@ -6,7 +6,7 @@
  * Time: 2:58 PM
  */
 
-namespace App\Http\Controllers\Inserters;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +15,7 @@ use App\User;
 use Validator;
 
 
-class SpotInsertController extends Controller {
+class SpotController extends Controller {
 
     function __construct()
     {
@@ -100,7 +100,7 @@ class SpotInsertController extends Controller {
                                         cena 'cost', IDmiestnosti 'room'
                                    FROM ExpozicneMiesto WHERE IDzamestnanca = ". \Auth::user()->id);
             $table = DB::select("SELECT typ 'type', velkost 'size',
-                                        cena 'cost', IDmiestnosti 'room', IDzamestnanca 'employee'
+                                        cena 'cost', IDmiestnosti 'room'
                                    FROM ExpozicneMiesto WHERE IDzamestnanca = ". \Auth::user()->id);
             return view("selectspot")
                 ->with("spots", $spots)
@@ -112,13 +112,14 @@ class SpotInsertController extends Controller {
             $spots = DB::select("SELECT IDmiesta 'id', typ 'type', velkost 'size',
                                         cena 'cost', IDmiestnosti 'room'
                                    FROM ExpozicneMiesto");
-            $table = DB::select("SELECT typ 'type', velkost 'size',
-                                        cena 'cost', IDmiestnosti 'room', IDzamestnanca 'employee'
-                                   FROM ExpozicneMiesto");
+            $table = DB::select("SELECT E.typ 'type', E.velkost 'size',
+                                        E.cena 'cost', E.IDmiestnosti 'room', Z.meno, Z.priezvisko
+                                 FROM ExpozicneMiesto E
+                                 INNER JOIN Zamestnanec Z ON Z.IDzamestnanca = E.IDzamestnanca");
             return view("selectspot")
                 ->with("spots", $spots)
                 ->with("table", $table)
-                ->with("header", ["spot type", "area", "cost", "room id", "employee id"])
+                ->with("header", ["spot type", "area", "cost", "room id", "employee name", "employee surname"])
                 ->with("target", "/man_spot/show");
         }
         else

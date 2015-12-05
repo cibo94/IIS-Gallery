@@ -34,9 +34,24 @@ class HomeController extends Controller
         $table = DB::select($select);
         $header = ['from', 'to', 'art name', 'author', 'type', 'exposition'];
 
+        $select = 'SELECT E.odCas od, E.doCas do, D.nazov Nazov, 
+                          D.autor, D.typ Typ, E.Nazov Nazov_Expozicie
+                    FROM Dielo D
+                    INNER JOIN Zahrnuje Za ON Za.DIELO = D.IDdiela
+                    INNER JOIN Expozicia E WHERE E.odCas > CURDATE() AND
+                                                 E.IDexpozicie IN 
+                        (SELECT Za.expozicia
+                         FROM ExpozicneMiesto EX, Zahrnuje Za
+                         WHERE EX.IDmiesta = Za.expozicneMiesto
+                         AND Za.dielo = D.IDdiela)
+                    ORDER BY od';
+
+        $planned = DB::select($select);
+
         return view("home")->with([
             'header' => $header,
-            'table' => $table
+            'table' => $table,
+            'planned' => $planned
         ]);
     }
 }
