@@ -20,6 +20,8 @@
                                     @elseif ($head == "email")
                                         <input type="email" class="form-control" name="{!! $head !!}"
                                                value="{!! old($head) !!}">
+                                    @elseif ($head == "role")
+                                        Employee
                                     @elseif ($head == "room")
                                         <select name={!! $head !!} class="form-control" id="room-select">
                                             @foreach($rooms as $room)

@@ -37,22 +37,12 @@
                 <li><a href="/about">about</a></li>
                 @if (\Illuminate\Support\Facades\Auth::check())
 
-                    <!-- Room and Spots managing for employee and admin -->
-                    @if (\Auth::user()->role == "employee" or \Auth::user()->role == "admin")
-                        <li class="dropdown">
-                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
-                               data-toggle="dropdown">
-                                manage rooms<b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/man_room/create">create</a></li>
-                                <li><a href="/man_room/delete">delete</a></li>
-                            </ul>
-                        </li>
-
+                    <!-- user and admin -->
+                    @if (\Auth::user()->role == "user" or \Auth::user()->role == "admin")
+                        <li><a href="/man_payment/pay">payments</a></li>
                     @endif
 
-                    <!-- Employee management for admin only -->
+                    <!-- admin only -->
                     @if (\Auth::user()->role == "admin")
                         <li class="dropdown">
                             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
@@ -68,10 +58,22 @@
                         <li class="dropdown">
                             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
                                data-toggle="dropdown">
+                                manage rooms<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/man_room/create">create</a></li>
+                                <li><a href="/man_room/update">update</a></li>
+                                <li><a href="/man_room/delete">delete</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle"
+                               data-toggle="dropdown">
                                 manage spots<b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/man_spot/create">create</a></li>
+                                <li><a href="/man_spot/show">update</a></li>
                                 <li><a href="/man_spot/delete">delete</a></li>
                             </ul>
                         </li>
@@ -88,6 +90,10 @@
                         </li>
                     @endif
 
+                    <!-- User only functions -->
+                    @if (Auth::user()->role == "employee")
+                        <li><a href="/man_spot/show">manage exposition spots</a></li>
+                    @endif
                     <!-- User only functions -->
                     @if (Auth::user()->role == "user")
                         <li class="dropdown">
