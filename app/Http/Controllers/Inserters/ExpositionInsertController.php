@@ -87,7 +87,8 @@ class ExpositionInsertController extends Controller {
 
         $artworks = DB::select("SELECT D.IDdiela 'id', D.nazov 'name', D.autor 'author', D.typ 'type'
                                 FROM Dielo D
-                                WHERE NOT EXISTS (
+                                WHERE D.IDusera = '". \Auth::user()->id ."' AND
+                                  NOT EXISTS (
                                     SELECT Z.dielo
                                     FROM Zahrnuje Z
                                     INNER JOIN Expozicia E

@@ -40,45 +40,36 @@
                                         </label>
                                         <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select">
                                             <?php $options = ["charcoal drawing", "chalk drawing", "pastel drawing",
-                                                              "pencil drawing", "pen and ink drawing", "caricature drawing",
-                                                              "encaustic painting", "tempera painting", "ink and wash painting",
-                                                              "oil painting", "watercolour painting", "acrylics painting",
-                                                              "bronze sculpture", "stone sculpture", "iron sculpture",
-                                                              "wood-carving", "photography", "other"] ?>
+                                                    "pencil drawing", "pen and ink drawing", "caricature drawing",
+                                                    "encaustic painting", "tempera painting", "ink and wash painting",
+                                                    "oil painting", "watercolour painting", "acrylics painting",
+                                                    "bronze sculpture", "stone sculpture", "iron sculpture",
+                                                    "wood-carving", "photography", "other"] ?>
+                                            <option value=""></option>
                                             @foreach ($options as $option)
-                                                @if ($option == $item)
-                                                    <option value="{!! $option !!}" selected>{!! $option !!}</option>
-                                                @else
-                                                    <option value="{!! $option !!}">{!! $option !!}</option>
-                                                @endif
+                                                <option value="{!! $option !!}">{!! $option !!}</option>
                                             @endforeach
                                         </select>
                                     @elseif ($key == "spottype")
                                         <label for="i5" class="control-label">
                                             {!! $item !!}
                                         </label>
-                                        <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select" id="spotselect">
+                                        <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select"
+                                                id="spotselect">
                                             <?php $options = ["floor", "wall", "ceiling"] ?>
+                                            <option value=""></option>
                                             @foreach ($options as $option)
-                                                @if ($option == $item)
-                                                    <option value="{!! $option !!}" selected>{!! $option !!}</option>
-                                                @else
-                                                    <option value="{!! $option !!}">{!! $option !!}</option>
-                                                @endif
+                                                <option value="{!! $option !!}">{!! $option !!}</option>
                                             @endforeach
                                         </select>
                                     @elseif ($key == "roomid")
                                         <label for="i5" class="control-label">
                                             {!! $item !!}
                                         </label>
-                                        <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select"
-                                                selected="{!! $item !!}">
+                                        <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select">
+                                            <option value=""></option>
                                             @foreach($rooms as $room)
-                                                @if ($room->id == $item)
-                                                    <option value="{!! $room->id !!}" selected>{!! $room->id !!}</option>
-                                                @else
-                                                    <option value="{!! $room->id !!}">{!! $room->id !!}</option>
-                                                @endif
+                                                <option value="{!! $room->id !!}">{!! $room->id !!}</option>
                                             @endforeach
                                         </select>
                                     @elseif ($key == "employeeid")
@@ -86,16 +77,11 @@
                                             employee
                                         </label>
                                         <select name="{!! $row->id !!}-{!! $key !!}" class="form-control select">
+                                            <option value=""></option>
                                             @foreach($employees as $employee)
-                                                @if ($employee->id == $item)
-                                                    <option value="{!! $employee->id !!}" selected>
-                                                        {!! $employee->name !!} {!! $employee->surname !!}
-                                                    </option>
-                                                @else
-                                                    <option value="{!! $employee->id !!}">
-                                                        {!! $employee->name !!} {!! $employee->surname !!}
-                                                    </option>
-                                                @endif
+                                                <option value="{!! $employee->id !!}">
+                                                    {!! $employee->name !!} {!! $employee->surname !!}
+                                                </option>
                                             @endforeach
                                         </select>
                                     @else
