@@ -6,7 +6,7 @@
  * Time: 2:58 PM
  */
 
-namespace App\Http\Controllers\Inserters;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Validator;
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use App\User;
 
 
-class EmployeeInsertController extends Controller
+class EmployeeController extends Controller
 {
 
     function __construct()

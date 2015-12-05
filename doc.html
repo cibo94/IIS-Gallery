@@ -1,0 +1,89 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-2"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+        table { border-collapse: collapse; }
+        td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+        dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>Galéria</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+    <dt>Autori</dt>
+    <dd>Lukáš Slouka <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+        <a href="mailto:xslouk02@stud.fit.vutbr.cz">xslouk02@stud.fit.vutbr.cz</a> -
+        databázový subsystém, vytváranie jednotlivých podstránok
+    </dd>
+    <dd>Miroslav Cibulka <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+        <a href="mailto:xcibul10@stud.fit.vutbr.cz">xcibul10@stud.fit.vutbr.cz</a> - 
+        správa užívateľov, inicializácia frameworku a bootstrapu, delete
+        a update template
+    </dd>
+    <dt>URL aplikace</dt>
+    <dd><a href="http://www.stud.fit.vutbr.cz/~xautor01/IIS">http://www.stud.fit.vutbr.cz/~xautor01/IIS</a></dd>
+</dl>
+
+<h2>Užívatelia systému pre testovanie</h2>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>root@email.com</td><td>000000</td><td>Administrátor</td></tr>
+<tr><td>employee@email.com</td><td>000000</td><td>Zamestnanec galérie</td></tr>
+<tr><td>artist@email.com</td><td>artist</td><td>Užívateľ systému</td></tr>
+</table>
+
+<h2>Implementácia</h2>
+
+<p>IS je implementovaný v anglickom jazyku</p>
+
+<p>Pri implementácii bol využitý framework <b>Laravel</b>. Tento framework využíva
+MVC model, v ktorom modely reprezentujú databázové relácie, views sú jednotlivé štylizované
+podstránky a controléry sú PHP triedy, ktoré preposielajú výsledky databázových operácií do
+views, prípadne vykonávajú databázové operácie na základe podnetov z views.</p>
+
+<h3>Use-case</h3>
+<table>
+<p>Všetky kontroléry sa nachádzajú v zložke <i>App/Http/Controllers</i></p>
+<tr><th>prípad užitia</th><th>typ uzivateľa</th><th>php script</th></tr>
+<tr><td>vytváranie, upravovanie a rušenie miestností</td><td>admin</td><td>RoomController</td></tr>
+<tr><td>vytváranie a rušenie expozičných miest</td><td>admin</td><td>SpotController</td></tr>
+<tr><td>vytváranie, upravovanie a rušenie zamestnancov galérie</td><td>admin</td><td>EmployeeController</td></tr>
+<tr><td>vytváranie, upravovanie a rušenie typov vybavenia expozičných miest</td><td>admin</td><td>EquipmentController</td></tr>
+<tr><td>prezeranie všetkých zaplatených aj nezaplatených poplatkov</td><td>admin</td><td>PaymentController</td></tr>
+<tr><td>upravovanie expozičných miest</td><td>admin, zamestnanec</td><td>SpotController</td></tr>
+<tr><td>vytváranie, upravovanie a rušenie umeleckých diel</td><td>zákazník</td><td>ArtworkController</td></tr>
+<tr><td>vytváranie, upravovanie a rušenie expozícií</td><td>zákazník</td><td>ExpositionController</td></tr>
+<tr><td>zaplatenie poplatkov za rezervovane expozicne miesta</td><td>zákazník</td><td>PaymentController</td></tr>
+<tr><td>registrácia nového zákazníka</td><td>neprihlásený užívateľ</td><td>AuthController</td></tr>
+<tr><td>prehľad práve vystavených diel</td><td>všetci</td><td>HomeController</td></tr>
+</table>
+
+<p>Oproti pôvodnému návrhu sa zmenilo hlavne spracovanie autorov diel. Nakoľko každý užívateľ pridáva diela do databázy sám, pričom rôzni užívatelia môžu vkladať diela od toho istého autora, je nezmyselné aby každý užívateľ vkladal do systému autorov predtým než vloží dielo. Mohlo by to spôsobiť viacnásobné vloženie toho istého autora do systému. Z tohoto hladiska bol autor implementovaný len ako atribút každého diela. (je pravda, že aj diela môžu byť v systéme viac krát, pokiaľ sa zmení vlastnícstvo, diela sú však naviazané na zákazníkov a môže s nimi pracovať len daný zákazník, čo nie je prípad autorov diel)</p>
+
+<p>Implementácia platobného systému v IS je len symbolická, to znamená, že po rezervácii expozičného miesta zákazníkom mu je vygenerovaný poplatok. Dátum splatnosti tohoto poplatku sa odvíja od dátumu expozície a suma od ceny expozičného miesta. Zákazník potom môže na podstránke <i>payments</i>, odkliknúť poplatky, ktoré chce zaplatiť (symbolická platba). V reálnom systéme by táto činnosť bola napojená na bankový systém a IS by taktiež obsahoval automat, ktorý by overoval prijatie platieb a podobne.
+</p>
+
+<h3>Databázový model</h3>
+<p>Pôvodný databázový návrh prešiel mnohými menšími zmenami hlavne čo sa týka integritných obmedzení tak, aby lepšie odrážal potrebnú funkcionalitu. Bol pridaný trigger, ktorý automaticky generuje nové poplatky po rezervácii expozičného miesta. Databáza dynamicky reaguje na vymazávanie záznamov, ktoré slúžia ako cudzie kľúče (napríklad po vymazaní miestnosti sú vymazané aj všetky expozičné miesta pridelené do danej miestnosti...). Výnimku tvoria poplatky a expozície, ktoré ostávajú evidované v systéme aj po vymazaní užívateľa.</p>
+
+<h2>Instalace</h2>
+<ul>
+<li>Stručně popište postup instalace na server</li>
+<li>Softwarové požadavky (verze PHP apod.)</li>
+<li>Jak rozbalit, konfigurovat, inicializovat databází, ...</li>
+</ul>
+
+<h2>Známé problémy</h2>
+<p>Z časových príčin nebolo implementované vyhľadávanie ľubovoľných položiek v databáze. Užívateľ však má napriek tomu prístup ku všetkým potrebným dátam v jednotlivých stránkach pri manipulácii s konkrétnou tabuľkou.</p>
+
+</body>
+</html>

@@ -15,12 +15,12 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
     'man_payment' => 'PaymentController',
-    'man_employee' => 'Inserters\EmployeeInsertController',
-    'man_artwork' => 'Inserters\ArtworkInsertController',
-    'man_exposition' => 'Inserters\ExpositionInsertController',
-    'man_room' => 'Inserters\RoomInsertController',
-    'man_spot' => 'Inserters\SpotInsertController',
-    'man_equipment' => 'Inserters\EquipmentInsertController',
+    'man_employee' => 'EmployeeController',
+    'man_artwork' => 'ArtworkController',
+    'man_exposition' => 'ExpositionController',
+    'man_room' => 'RoomController',
+    'man_spot' => 'SpotController',
+    'man_equipment' => 'EquipmentController',
 ]);
 
 Route::get('/user/account', ['middleware' => "user", "uses" => "AccountController@show"]);

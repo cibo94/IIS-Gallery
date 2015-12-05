@@ -6,7 +6,7 @@
  * Time: 2:58 PM
  */
 
-namespace App\Http\Controllers\Inserters;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +15,7 @@ use App\User;
 use Validator;
 
 
-class EquipmentInsertController extends Controller {
+class EquipmentController extends Controller {
 
     function __construct()
     {
